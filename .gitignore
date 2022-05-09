@@ -1,0 +1,5 @@
+*.o
+/.idea
+/.vscode
+myteams_server
+myteams_cli
