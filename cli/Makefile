@@ -9,7 +9,7 @@ OUT 	=	myteams_cli
 SOURCE	=	src/main.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes
-LDFLAGS	=
+LDFLAGS	=	-L../shared_lib '-Wl,-rpath=$$ORIGIN/shared_lib' -lmyteams
 OBJS	=	$(SOURCE:.c=.o)
 
 
