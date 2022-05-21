@@ -7,15 +7,15 @@
 
 #include "cli.h"
 
-void handle_input(commands_t *commands, char *line)
+void handle_input(client_t *client, char *line)
 {
     for (int i = 0; i != 15; i++)
-        if (strcmp(line, commands->commands_name[i]) == 0)
-            return ((commands->commands_func[i])());
+        if (strcmp(line, client->commands->commands_name[i]) == 0)
+            return ((client->commands->commands_func[i])());
     printf("Unkown command.\n");
 }
 
-void get_input(commands_t *commands)
+void get_input(client_t *client)
 {
     char *line = NULL;
     size_t len = 0;
@@ -25,7 +25,7 @@ void get_input(commands_t *commands)
     read = getline(&line, &len, stdin);
     if (read != -1) {
         line[strlen(line) - 1] = '\0';
-        handle_input(commands, line);
+        handle_input(client, line);
     }
     free(line);
 }

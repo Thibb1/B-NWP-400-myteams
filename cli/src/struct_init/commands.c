@@ -47,7 +47,7 @@ void init_commands_func(commands_t *c)
 
 commands_t *init_commands()
 {
-    commands_t *c = malloc(sizeof(struct commands_s));
+    commands_t *c = malloc(sizeof(commands_t));
     init_commands_name(c);
     init_commands_func(c);
     return (c);

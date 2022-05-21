@@ -11,9 +11,9 @@ int main(int ac, char **av)
 {
     (void) ac;
     (void) av;
-    commands_t *commands = init_commands();
+    client_t *client = init_client();
     for (;;)
-        get_input(commands);
-    free(commands);
+        get_input(client);
+    free(client);
     return 84;
 }

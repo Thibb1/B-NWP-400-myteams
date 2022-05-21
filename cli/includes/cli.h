@@ -14,13 +14,13 @@
     #include <string.h>
     #include <unistd.h>
     #include <stdlib.h>
-
-    typedef struct commands_s {
-        char *commands_name[15];
-        void (*commands_func[15])(void);
-    } commands_t;
+    #include "struct.h"
 
 //  src/struct_init
+    //  client.c
+
+    client_t *init_client();
+
     //  commands.c
 
     void init_commmands_name(commands_t *c);
@@ -32,9 +32,9 @@
 //  src
     //  input.c
 
-    void handle_input(commands_t *commands, char *line);
+    void handle_input(client_t *client, char *line);
 
-    void get_input(commands_t *commands);
+    void get_input(client_t *client);
 
     //  funcs.c
 
