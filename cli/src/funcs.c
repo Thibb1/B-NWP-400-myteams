@@ -7,12 +7,12 @@
 
 #include "cli.h"
 
-void default_func()
+void default_func(void)
 {
     printf("Not implemented yet\n");
 }
 
-void exit_program()
+void exit_program(void) // not clean
 {
     exit(0);
 }

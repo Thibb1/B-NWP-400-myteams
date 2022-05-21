@@ -6,8 +6,10 @@
 ##
 
 OUT 	=	myteams_cli
-SOURCE	=	src/main.c \
-			src/funcs.c
+SOURCE	=	src/struct_init/commands.c \
+			src/funcs.c \
+			src/input.c \
+			src/main.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes
 LDFLAGS	=	-L../shared_lib '-Wl,-rpath=$$ORIGIN/shared_lib' -lmyteams
