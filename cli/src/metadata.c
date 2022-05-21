@@ -7,7 +7,7 @@
 
 #include "cli.h"
 
-client_t *my_client() {
+client_t *my_client(void) {
     static client_t *client;
 
     if (!client)
@@ -15,7 +15,7 @@ client_t *my_client() {
     return client;
 }
 
-void garbage_delete() {
+void garbage_delete(void) {
     DESTROY(my_client()->commands);
     DESTROY(my_client()->input);
     DESTROY(my_client());

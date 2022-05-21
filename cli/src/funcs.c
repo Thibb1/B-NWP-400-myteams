@@ -9,10 +9,11 @@
 
 void default_func(void)
 {
-    printf("Not implemented yet\n");
+    P_ERROR("Not implemented yet");
 }
 
-void exit_program(void) // not clean
+void exit_program(void)
 {
+    garbage_delete();
     exit(0);
 }

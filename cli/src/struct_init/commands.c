@@ -45,9 +45,9 @@ void init_commands_func(commands_t *c)
     c->commands_func[14] = exit_program;
 }
 
-commands_t *init_commands()
+commands_t *init_commands(void)
 {
-    commands_t *c = malloc(sizeof(commands_t));
+    commands_t *c = calloc(1, sizeof(commands_t));
     init_commands_name(c);
     init_commands_func(c);
     return (c);

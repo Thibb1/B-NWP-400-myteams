@@ -15,6 +15,7 @@ typedef struct commands_s {
 } commands_t;
 
 typedef struct client_s {
+    bool running;
     char **input;
     commands_t *commands;
 } client_t;

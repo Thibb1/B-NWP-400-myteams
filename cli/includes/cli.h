@@ -14,46 +14,42 @@
     #include <string.h>
     #include <unistd.h>
     #include <stdlib.h>
+    #include <stdbool.h>
     #include "logging_client.h"
     #include "client.h"
     #include "macros.h"
 
 //  src/struct_init
-//  client.c
-
-client_t *init_client();
-
 //  commands.c
 
 void init_commmands_name(commands_t *c);
-
 void init_commmands_func(commands_t *c);
-
-commands_t *init_commands();
+commands_t *init_commands(void);
 
 //  src
-//  engine.c
+//  client.c
 
-int engine();
+void create_client(char **av);
+void run_client(void);
 
 //  funcs.c
 
-void default_func();
-
-void exit_program();
+void default_func(void);
+void exit_program(void);
 
 //  input.c
 
-void handle_input(client_t *client, char *line);
-
-void get_input(client_t *client);
+void get_input(void);
+void handle_command(void);
+void to_word_array(char *buff);
+int len_array(char *buff);
 
 //  main.c
 
-void garbage_delete();
 
-int display_help(int ret);
+// metatdata.c
 
-int check_args(int ac, char **av);
+client_t *my_client(void);
+void garbage_delete(void);
 
 #endif

@@ -7,28 +7,56 @@
 
 #include "cli.h"
 
-void handle_input(client_t *client, char *line)
+void handle_command(void)
 {
-    if (line[0] != '/')
+    if (!C_INPUT || !C_INPUT[0] || C_INPUT[0][0] != '/') {
+        P_ERROR("No command given");
         return;
+    }
     for (int i = 0; i != 15; i++)
-        if (strcmp(line, client->commands->commands_name[i]) == 0)
-            return ((client->commands->commands_func[i])());
-    printf("Unkown command.\n");
+        if (!strcmp(C_INPUT[0], C_COMMANDS->commands_name[i]))
+            return ((C_COMMANDS->commands_func[i])());
+    P_ERROR("Unkown command");
 }
 
-void get_input(client_t *client)
+int len_array(char *buff)
 {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read;
+    char *cpy = calloc(strlen(buff) + 1, sizeof(char));
+    int len = 0;
+    char *left;
+
+    strcpy(cpy, buff);
+    left = cpy;
+    while (strtok_r(left, " \r\n\t", &left) && ++len);
+    DESTROY(cpy);
+    return len;
+}
+
+void to_word_array(char *buff)
+{
+    int len = len_array(buff);
+    char *ptr = NULL;
+    int x = 0;
+
+    DESTROY(C_INPUT);
+    C_INPUT = calloc(len + 1, sizeof(char *));
+    while ((ptr = strtok_r(buff, " \r\n\t", &buff)))
+        C_INPUT[x++] = ptr;
+}
+
+void get_input(void)
+{
+    ssize_t read_ret;
+    char buffer[1024];
 
     printf("> ");
-    read = getline(&line, &len, stdin);
-    if (read != -1 && read != EOF) {
-        line[strlen(line) - 1] = '\0';
-        handle_input(client, line);
-    } else
+    fflush(stdout);
+    if ((read_ret = read(STDIN_FILENO, buffer, 1024)) == 0) {
+        garbage_delete();
         exit(0);
-    free(line);
+    } else {
+        buffer[read_ret] = 0;
+        to_word_array(buffer);
+        handle_command();
+    }
 }
