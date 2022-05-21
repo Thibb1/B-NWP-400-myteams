@@ -26,7 +26,7 @@ fclean:	clean
 
 re:		fclean all
 
-debug:	CFLAGS	+=	-ggdb
+debug:	CFLAGS	+=	-ggdb -DDEBUG
 debug:	re
 
 .PHONY: all clean fclean re debug

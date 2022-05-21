@@ -19,7 +19,6 @@
     #define ORANGE "\033[38;5;208m"
     #define BOLD "\033[1m"
 
-    #define M_ERROR BOLD RED "[%s:%d] " RESET BOLD "%s " RESET
     #define M_USAGE "USAGE: ./myteams_cli ip port\n" \
     "\tip is the server ip address on which the server socket listens\n" \
     "\tport is the port number on which the server socket listens"
@@ -31,9 +30,16 @@ if (v) { \
 
     #define DEF_OR_ARG(value, ...) value
 
-    #define P_ERROR(...) \
+    #ifdef DEBUG
+        #define M_ERROR BOLD RED "[%s:%d] " RESET BOLD "%s " RESET
+        #define P_ERROR(...) \
     fprintf(stderr, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
     fprintf(stderr, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
+    #else
+        #define M_ERROR BOLD RED "%s\n" RESET
+        #define P_ERROR(...) \
+    fprintf(stderr, M_ERROR, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
+    #endif
 
     #define ASSERT(value, ...) \
 if (value) { \
