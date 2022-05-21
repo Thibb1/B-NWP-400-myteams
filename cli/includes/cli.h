@@ -14,7 +14,9 @@
     #include <string.h>
     #include <unistd.h>
     #include <stdlib.h>
-    #include "struct.h"
+    #include "logging_client.h"
+    #include "client.h"
+    #include "macros.h"
 
 //  src/struct_init
 //  client.c
