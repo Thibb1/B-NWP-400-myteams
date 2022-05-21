@@ -10,6 +10,7 @@ SOURCE	=	src/struct_init/commands.c \
 			src/struct_init/client.c \
 			src/funcs.c \
 			src/input.c \
+			src/engine.c \
 			src/main.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes

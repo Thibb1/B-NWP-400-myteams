@@ -30,16 +30,26 @@
     commands_t *init_commands();
 
 //  src
-    //  input.c
+    //  engine.c
 
-    void handle_input(client_t *client, char *line);
-
-    void get_input(client_t *client);
+    int engine();
 
     //  funcs.c
 
     void default_func();
 
     void exit_program();
+
+    //  input.c
+
+    void handle_input(client_t *client, char *line);
+
+    void get_input(client_t *client);
+
+    //  main.c
+
+    int display_help(int ret);
+
+    int check_args(int ac, char **av);
 
 #endif

@@ -9,21 +9,21 @@
 
 void init_commands_name(commands_t *c)
 {
-    c->commands_name[0] = "help\0";
-    c->commands_name[1] = "login\0";
-    c->commands_name[2] = "logout\0";
-    c->commands_name[3] = "users\0";
-    c->commands_name[4] = "user\0";
-    c->commands_name[5] = "send\0";
-    c->commands_name[6] = "messages\0";
-    c->commands_name[7] = "subscribe\0";
-    c->commands_name[8] = "subscribed\0";
-    c->commands_name[9] = "unsubscribe\0";
-    c->commands_name[10] = "use\0";
-    c->commands_name[11] = "create\0";
-    c->commands_name[12] = "list\0";
-    c->commands_name[13] = "info\0";
-    c->commands_name[14] = "exit\0";
+    c->commands_name[0] = "/help\0";
+    c->commands_name[1] = "/login\0";
+    c->commands_name[2] = "/logout\0";
+    c->commands_name[3] = "/users\0";
+    c->commands_name[4] = "/user\0";
+    c->commands_name[5] = "/send\0";
+    c->commands_name[6] = "/messages\0";
+    c->commands_name[7] = "/subscribe\0";
+    c->commands_name[8] = "/subscribed\0";
+    c->commands_name[9] = "/unsubscribe\0";
+    c->commands_name[10] = "/use\0";
+    c->commands_name[11] = "/create\0";
+    c->commands_name[12] = "/list\0";
+    c->commands_name[13] = "/info\0";
+    c->commands_name[14] = "/exit\0";
 }
 
 void init_commands_func(commands_t *c)

@@ -9,6 +9,8 @@
 
 void handle_input(client_t *client, char *line)
 {
+    if (line[0] != '/')
+        return;
     for (int i = 0; i != 15; i++)
         if (strcmp(line, client->commands->commands_name[i]) == 0)
             return ((client->commands->commands_func[i])());
