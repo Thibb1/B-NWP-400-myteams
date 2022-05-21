@@ -24,6 +24,11 @@ int check_args(int ac, char **av)
     return (1);
 }
 
+void garbage_delete()
+{
+
+}
+
 int main(int ac, char **av)
 {
     int ret = check_args(ac, av);

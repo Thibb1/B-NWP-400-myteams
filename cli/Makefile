@@ -14,7 +14,7 @@ SOURCE	=	src/struct_init/commands.c \
 			src/main.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes
-LDFLAGS	=	-L../shared_lib '-Wl,-rpath=$$ORIGIN/shared_lib' -lmyteams
+LDFLAGS	=	-L../libs/myteams '-Wl,-rpath=$$ORIGIN/libs/myteams' -lmyteams
 OBJS	=	$(SOURCE:.c=.o)
 
 

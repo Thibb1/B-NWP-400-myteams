@@ -17,39 +17,41 @@
     #include "struct.h"
 
 //  src/struct_init
-    //  client.c
+//  client.c
 
-    client_t *init_client();
+client_t *init_client();
 
-    //  commands.c
+//  commands.c
 
-    void init_commmands_name(commands_t *c);
+void init_commmands_name(commands_t *c);
 
-    void init_commmands_func(commands_t *c);
+void init_commmands_func(commands_t *c);
 
-    commands_t *init_commands();
+commands_t *init_commands();
 
 //  src
-    //  engine.c
+//  engine.c
 
-    int engine();
+int engine();
 
-    //  funcs.c
+//  funcs.c
 
-    void default_func();
+void default_func();
 
-    void exit_program();
+void exit_program();
 
-    //  input.c
+//  input.c
 
-    void handle_input(client_t *client, char *line);
+void handle_input(client_t *client, char *line);
 
-    void get_input(client_t *client);
+void get_input(client_t *client);
 
-    //  main.c
+//  main.c
 
-    int display_help(int ret);
+void garbage_delete();
 
-    int check_args(int ac, char **av);
+int display_help(int ret);
+
+int check_args(int ac, char **av);
 
 #endif

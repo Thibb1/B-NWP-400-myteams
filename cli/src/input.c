@@ -25,9 +25,11 @@ void get_input(client_t *client)
 
     printf("> ");
     read = getline(&line, &len, stdin);
-    if (read != -1) {
+    if (read != -1 && read != EOF) {
         line[strlen(line) - 1] = '\0';
         handle_input(client, line);
     }
+    else
+        exit(0);
     free(line);
 }
