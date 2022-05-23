@@ -15,6 +15,8 @@
     #include <unistd.h>
     #include <stdlib.h>
     #include <stdbool.h>
+    #include <signal.h>
+
     #include "logging_client.h"
     #include "client.h"
     #include "macros.h"
