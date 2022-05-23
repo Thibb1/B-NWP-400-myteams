@@ -42,7 +42,7 @@ void exit_program(void);
 
 void get_input(void);
 void handle_command(void);
-void to_word_array(char *buff);
+void to_word_array(char *buff, char **store);
 int len_array(char *buff);
 
 //  main.c

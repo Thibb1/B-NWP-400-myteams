@@ -32,16 +32,16 @@ int len_array(char *buff)
     return len;
 }
 
-void to_word_array(char *buff)
+void to_word_array(char *buff, char **store)
 {
     int len = len_array(buff);
     char *ptr = NULL;
     int x = 0;
 
-    DESTROY(C_INPUT);
-    C_INPUT = calloc(len + 1, sizeof(char *));
+    DESTROY(store);
+    store = calloc(len + 1, sizeof(char *));
     while ((ptr = strtok_r(buff, " \r\n\t", &buff)))
-        C_INPUT[x++] = ptr;
+        store[x++] = ptr;
 }
 
 void get_input(void)
@@ -55,6 +55,6 @@ void get_input(void)
         disconnect_client();
     } else {
         buffer[read_ret] = 0;
-        to_word_array(buffer);
+        to_word_array(buffer, C_INPUT);
     }
 }
