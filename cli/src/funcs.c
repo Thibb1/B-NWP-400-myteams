@@ -10,6 +10,7 @@
 void default_func(void)
 {
     P_ERROR("Not implemented yet");
+    send_input();
 }
 
 void exit_program(void)

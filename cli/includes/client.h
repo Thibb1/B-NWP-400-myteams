@@ -19,12 +19,11 @@ typedef struct commands_s {
 
 typedef struct client_s {
     bool running;
+    char **cli_input;
     char *ip;
     char *port;
-    int fd;
+    int input;
     struct sockaddr_in server;
-    FILE *stream;
-    char **input;
     commands_t *commands;
 } client_t;
 

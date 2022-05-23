@@ -61,7 +61,7 @@ if (value) { \
 }
 
 
-    #define C_INPUT my_client()->input
+    #define C_INPUT my_client()->cli_input
     #define C_COMMANDS my_client()->commands
 
 
