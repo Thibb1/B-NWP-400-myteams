@@ -52,11 +52,9 @@ void get_input(void)
     printf("> ");
     fflush(stdout);
     if ((read_ret = read(STDIN_FILENO, buffer, 1024)) == 0) {
-        garbage_delete();
-        exit(0);
+        disconnect_client();
     } else {
         buffer[read_ret] = 0;
         to_word_array(buffer);
-        handle_command();
     }
 }

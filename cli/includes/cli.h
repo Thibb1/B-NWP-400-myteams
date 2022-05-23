@@ -29,6 +29,7 @@ commands_t *init_commands(void);
 //  src
 //  client.c
 
+void disconnect_client(void);
 void create_client(char **av);
 void run_client(void);
 

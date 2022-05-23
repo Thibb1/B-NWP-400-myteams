@@ -7,6 +7,12 @@
 
 #include "cli.h"
 
+void disconnect_client(void)
+{
+    garbage_delete();
+    exit(0);
+}
+
 void create_client(char **av)
 {
     (void) av;
@@ -18,5 +24,6 @@ void run_client(void)
 {
     while (my_client()->running) {
         get_input();
+        handle_command();
     }
 }
