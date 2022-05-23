@@ -7,6 +7,9 @@
 
 #ifndef STRUCT_H_
     #define STRUCT_H_
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+
     #include "cli.h"
 
 typedef struct commands_s {
@@ -16,6 +19,11 @@ typedef struct commands_s {
 
 typedef struct client_s {
     bool running;
+    char *ip;
+    char *port;
+    int fd;
+    struct sockaddr_in server;
+    FILE *stream;
     char **input;
     commands_t *commands;
 } client_t;

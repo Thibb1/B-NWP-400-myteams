@@ -11,6 +11,7 @@ SOURCE	=	src/struct_init/commands.c	\
 			src/input.c					\
 			src/client.c				\
 			src/metadata.c				\
+			src/my_regex.c				\
 			src/main.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams

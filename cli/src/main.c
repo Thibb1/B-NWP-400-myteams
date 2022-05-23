@@ -17,6 +17,7 @@ int main(int ac, char **av)
 {
     ASSERT(ac != 3, M_USAGE);
     ASSERT(!strcmp(av[1], "-h"), M_USAGE);
+    ASSERT(!regex_match(av[2], "^[1-9][0-9]{,4}$"), M_PORT);
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
     create_client(av);
