@@ -16,7 +16,11 @@ void handle_command(int i)
         dprintf(C_SOCKET, SYNTAX_ERROR);
         return;
     }
-    LOG("Command received: %s %s", C_CMD[0], C_CMD[1]);
+    LOG("Recieved a new message...");
+    do {
+        LOG("%s", C_CMD[x]);
+    } while(C_CMD[++x]);
+    x = 0;
     for (; COMMANDS[x] && strcmp(COMMANDS[x], C_CMD[0]); x++);
     if (COMMANDS[x] && COMMANDS_FUNC[x])
         COMMANDS_FUNC[x](i);

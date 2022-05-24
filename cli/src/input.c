@@ -42,6 +42,7 @@ void to_word_array(char *buff)
     C_INPUT = calloc(len + 1, sizeof(char *));
     while ((ptr = strtok_r(buff, " \r\n\t", &buff)))
         C_INPUT[x++] = ptr;
+    C_INPUT[x] = NULL;
 }
 
 void get_input(void)
@@ -62,5 +63,19 @@ void get_input(void)
 
 void send_input(void)
 {
-    dprintf(my_client()->input, "%s %s\n", C_INPUT[0], C_INPUT[1]);
+    int len = 0;
+    while (C_INPUT[len++]);
+    switch (--len) {
+        case 2:
+            dprintf(my_client()->input, "%s %s\n", C_INPUT[0], C_INPUT[1]);
+            break;
+        case 3:
+            dprintf(my_client()->input, "%s %s %s\n", C_INPUT[0], C_INPUT[1],
+                C_INPUT[2]);
+            break;
+        default:
+            dprintf(my_client()->input, "%s\n", C_INPUT[0]);
+            break;
+    }
+    printf("%d\n", len);
 }

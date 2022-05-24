@@ -38,8 +38,8 @@ if (v) { \
     #ifdef DEBUG
         #define M_ERROR BOLD RED "[%s:%d] " RESET BOLD "%s " RESET
         #define P_ERROR(...) \
-    fprintf(stderr, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stderr, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
+    fprintf(stdout, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
+    fprintf(stdout, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
         #define M_LOG BOLD BLUE "[%s:%d] " RESET BOLD "%s " RESET
         #define LOG(...) \
     fprintf(stdout, M_LOG, __FILE__, __LINE__, __FUNCTION__); \
@@ -47,7 +47,7 @@ if (v) { \
     #else
         #define M_ERROR BOLD RED "%s\n" RESET
         #define P_ERROR(...) \
-    fprintf(stderr, M_ERROR, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
+    fprintf(stdout, M_ERROR, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
         #define M_LOG BOLD BLUE "%s\n" RESET
         #define LOG(...) \
     fprintf(stdout, M_LOG, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Log"));
