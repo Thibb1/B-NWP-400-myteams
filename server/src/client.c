@@ -55,7 +55,6 @@ void connect_client(void)
         if (C_SOCKET == 0) {
             C_SOCKET = SERVER->new_socket;
             C_CNT = false;
-            C_PATH = strdup(SERVER->home_anon);
             return;
         }
     }

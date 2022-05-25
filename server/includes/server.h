@@ -32,7 +32,6 @@
 
 typedef struct server_s {
     long port;
-    char *home_anon;
     int socket;
     int max_fd;
     int opt;

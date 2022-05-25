@@ -1,7 +1,0 @@
-*.o
-*.txt
-*.sh
-myftp
-vgcore*
-.idea
-home_anon

@@ -17,8 +17,8 @@ void int_handler(int a)
 
 int main(int ac, char *av[])
 {
-    ASSERT(ac != 3, USAGE);
-    ASSERT(!strcmp(av[1], "-h"), USAGE);
+    ASSERT(ac != 2, USAGE);
+    ASSERT(!strcmp(av[1], "-help"), USAGE);
     parse_av(av);
     create_server();
     signal(SIGINT, int_handler);
@@ -40,13 +40,7 @@ bool dir_ok(char *path)
 void parse_av(char *av[])
 {
     char *ptr;
-    char actual_path[PATH_MAX];
 
-    realpath(av[2], actual_path);
-    ASSERT(!dir_ok(actual_path), "dir");
     my_server()->port = strtol(av[1], &ptr, 10);
     ASSERT(av[1] == ptr || my_server()->port < 0, "port");
-    my_server()->home_anon = calloc(strlen(actual_path) + 1, sizeof(char));
-    strcpy(my_server()->home_anon, actual_path);
-    ASSERT(!my_server()->home_anon, "dir copy");
 }
