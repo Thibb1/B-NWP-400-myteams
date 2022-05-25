@@ -77,5 +77,4 @@ void send_input(void)
             dprintf(my_client()->input, "%s\n", C_INPUT[0]);
             break;
     }
-    printf("%d\n", len);
 }

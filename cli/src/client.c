@@ -9,8 +9,10 @@
 
 void disconnect_client(void)
 {
-    if (my_client()->input != -1)
+    if (my_client()->input != -1) {
+        dprintf(my_client()->input, "/exit\n");
         close(my_client()->input);
+    }
     garbage_delete();
     exit(0);
 }

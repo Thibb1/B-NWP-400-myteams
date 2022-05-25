@@ -42,7 +42,7 @@ void init_commands_func(commands_t *c)
     c->commands_func[11] = default_func;
     c->commands_func[12] = default_func;
     c->commands_func[13] = default_func;
-    c->commands_func[14] = exit_program;
+    c->commands_func[14] = disconnect_client;
 }
 
 commands_t *init_commands(void)

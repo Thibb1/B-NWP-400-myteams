@@ -27,7 +27,7 @@ static const char *COMMANDS[] = {
     "PASS",
     "CWD",
     "CDUP",
-    "QUIT",
+    "/exit",
     "DELE",
     "PWD",
     "PASV",
