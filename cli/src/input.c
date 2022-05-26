@@ -6,6 +6,7 @@
 */
 
 #include "cli.h"
+#include "my_commands.h"
 
 void handle_command(void)
 {
@@ -13,37 +14,31 @@ void handle_command(void)
         P_ERROR("No command given");
         return;
     }
-    for (int i = 0; i != 15; i++)
-        if (!strcmp(C_INPUT[0], C_COMMANDS->commands_name[i]))
+    for (int i = 0; COMMANDS[i]; i++)
+        if (!strcmp(C_INPUT[0], COMMANDS[i]))
             return ((C_COMMANDS->commands_func[i])());
-    P_ERROR("Unkown command");
+    P_ERROR("Unknown command");
 }
 
-int len_array(char *buff)
+void help_client(void)
 {
-    char *cpy = calloc(strlen(buff) + 1, sizeof(char));
-    int len = 0;
-    char *left;
+    int y;
 
-    strcpy(cpy, buff);
-    left = cpy;
-    while (strtok_r(left, " \r\n\t", &left) && ++len);
-    DESTROY(cpy);
-    return len;
+    if (!C_INPUT[1]) {
+        LOG(M_HELP);
+        return;
+    }
+    for (int x = 1; C_INPUT[x]; x++) {
+        y = 0;
+        for (; COMMANDS[y] && strcmp(COMMANDS[y], C_INPUT[x]); y++);
+        if (COMMANDS_HELP[y]) {
+            LOG(COMMANDS_HELP[y]);
+        } else {
+            P_ERROR(M_SYNTAX);
+        }
+    }
 }
 
-void to_word_array(char *buff)
-{
-    int len = len_array(buff);
-    char *ptr = NULL;
-    int x = 0;
-
-    DESTROY(C_INPUT);
-    C_INPUT = calloc(len + 1, sizeof(char *));
-    while ((ptr = strtok_r(buff, " \r\n\t", &buff)))
-        C_INPUT[x++] = ptr;
-    C_INPUT[x] = NULL;
-}
 
 void get_input(void)
 {
@@ -76,5 +71,20 @@ void send_input(void)
         default:
             dprintf(my_client()->input, "%s\n", C_INPUT[0]);
             break;
+    }
+}
+
+void read_input(void)
+{
+    ssize_t read_ret;
+
+
+    if ((read_ret = read(my_client()->input, C_BUFFER, 1024)) == 0) {
+        disconnect_client();
+    } else {
+        C_BUFFER[read_ret] = 0;
+        if (regex_match(C_BUFFER, "^221.*$")) {
+            disconnect_client();
+        }
     }
 }

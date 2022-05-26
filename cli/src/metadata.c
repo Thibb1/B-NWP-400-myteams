@@ -16,6 +16,7 @@ client_t *my_client(void) {
 }
 
 void garbage_delete(void) {
+    DESTROY(my_client()->cli_buffer);
     DESTROY(my_client()->cli_input);
     DESTROY(my_client()->commands);
     DESTROY(my_client());

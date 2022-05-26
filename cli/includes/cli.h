@@ -24,7 +24,6 @@
 //  src/struct_init
 //  commands.c
 
-void init_commmands_name(commands_t *c);
 void init_commmands_func(commands_t *c);
 commands_t *init_commands(void);
 
@@ -43,17 +42,26 @@ void exit_program(void);
 //  input.c
 
 void get_input(void);
+void help_client(void);
 void handle_command(void);
+void send_input(void);
+void read_input(void);
+
+//  text_utils.c
+
 void to_word_array(char *buff);
 int len_array(char *buff);
-void send_input(void);
-
-//  main.c
 
 
 // metatdata.c
 
 client_t *my_client(void);
 void garbage_delete(void);
+
+// client_command
+//  my_user.c
+
+void login_client(void);
+void logout_client(void);
 
 #endif

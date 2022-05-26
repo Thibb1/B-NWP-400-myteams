@@ -35,6 +35,7 @@
     #define DATA_CLOS "226 " BOLD GREEN "Closing data connection." RESET CR
     #define PASV "227 " BOLD GREEN "Entering Passive Mode " RESET IP CR
     #define LOGIN "230 " BOLD GREEN "User logged in" RESET CR
+    #define USER_LOGOUT "231 " BOLD RED "User logged out" RESET CR
     #define DELE "250 " BOLD ORANGE "%s deleted" RESET CR
     #define DIR_CHANGED "250 " BOLD GREEN "%s" RESET CR
     #define ACC_OK "331 " BOLD GREEN "User name okay, need password." RESET CR

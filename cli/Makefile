@@ -6,12 +6,14 @@
 ##
 
 OUT 	=	myteams_cli
-SOURCE	=	src/struct_init/commands.c	\
-			src/funcs.c					\
-			src/input.c					\
-			src/client.c				\
-			src/metadata.c				\
-			src/my_regex.c				\
+SOURCE	=	src/struct_init/commands.c		\
+			src/client_command/my_user.c	\
+			src/funcs.c						\
+			src/input.c						\
+			src/client.c					\
+			src/metadata.c					\
+			src/my_regex.c					\
+			src/text_utils.c				\
 			src/main.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams

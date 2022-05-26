@@ -13,13 +13,14 @@
     #include "cli.h"
 
 typedef struct commands_s {
-    char *commands_name[15];
     void (*commands_func[15])(void);
 } commands_t;
 
 typedef struct client_s {
     bool running;
+    bool connected;
     char **cli_input;
+    char *cli_buffer;
     char *ip;
     char *port;
     int input;

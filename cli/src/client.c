@@ -20,10 +20,13 @@ void disconnect_client(void)
 void create_client(char **av)
 {
     my_client()->running = true;
+    my_client()->connected = false;
     my_client()->ip = av[1];
     my_client()->port = av[2];
     my_client()->input = socket(AF_INET, SOCK_STREAM, 0);
     ASSERT(my_client()->input == -1, M_SOCKET);
+    my_client()->cli_buffer = calloc(1, 1024);
+    ASSERT(!my_client()->cli_buffer, M_MEMORY);
     my_client()->server = (struct sockaddr_in) {0};
     my_client()->server.sin_family = AF_INET;
     my_client()->server.sin_port = htons(atoi(my_client()->port));

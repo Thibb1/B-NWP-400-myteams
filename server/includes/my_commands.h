@@ -8,8 +8,8 @@
 #ifndef MYTEAMS_SERVER_MY_COMMANDS_H
     #define MYTEAMS_SERVER_MY_COMMANDS_H
 
-void my_user(int);
-void my_pass(int);
+void login_server(int);
+void logout_server(int);
 void my_cwd(int);
 void my_cdup(int);
 void my_quit(int);
@@ -23,8 +23,8 @@ void my_stor(int);
 void my_list(int);
 
 static const char *COMMANDS[] = {
-    "USER",
-    "PASS",
+    "/login",
+    "/logout",
     "CWD",
     "CDUP",
     "/exit",
@@ -32,7 +32,7 @@ static const char *COMMANDS[] = {
     "PWD",
     "PASV",
     "PORT",
-    "HELP",
+    "/help",
     "NOOP",
     "RETR",
     "STOR",
@@ -41,8 +41,8 @@ static const char *COMMANDS[] = {
 };
 
 static void (*COMMANDS_FUNC[])(int) = {
-    my_user,
-    my_pass,
+    login_server,
+    logout_server,
     my_cwd,
     my_cdup,
     my_quit,

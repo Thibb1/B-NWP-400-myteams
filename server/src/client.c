@@ -49,7 +49,7 @@ void connect_client(void)
     ASSERT((SERVER->new_socket = accept(S_SOCKET, (struct sockaddr *)&S_ADDR,
         &S_ADLEN)) < 0, "accept error");
     LOG("Connection from %s:%d", inet_ntoa(S_ADDR.sin_addr), ntohs(S_PORT));
-    ASSERT(dprintf(SERVER->new_socket, SERVICE_READY) < 0, "message");
+    // ASSERT(dprintf(SERVER->new_socket, SERVICE_READY) < 0, "message");
     LOG("Welcomed new connection");
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (C_SOCKET == 0) {

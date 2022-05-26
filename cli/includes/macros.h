@@ -26,7 +26,11 @@
     #define M_PORT "PORT must be a number between 1 and 65535"
     #define M_IP "IP must be a valid IPv4 address"
     #define M_SOCKET "socket() failed"
+    #define M_MEMORY "memory allocation failed"
     #define M_CONNECT "connect() failed"
+    #define M_HELP "/help [command] : display help for a command"
+    #define M_SYNTAX "Syntax error, parameters or arguments are incorrect"
+    #define M_MUST_BE_LOGGED "You must be logged in to do this"
 
     #define DESTROY(v) \
 if (v) { \
@@ -41,16 +45,16 @@ if (v) { \
     fprintf(stdout, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
     fprintf(stdout, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
         #define M_LOG BOLD BLUE "[%s:%d] " RESET BOLD "%s " RESET
-        #define LOG(...) \
+        #define LOG(message) \
     fprintf(stdout, M_LOG, __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stdout, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Log"));
+    fprintf(stdout, "(%s)\n", message);
     #else
         #define M_ERROR BOLD RED "%s\n" RESET
         #define P_ERROR(...) \
     fprintf(stdout, M_ERROR, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
         #define M_LOG BOLD BLUE "%s\n" RESET
-        #define LOG(...) \
-    fprintf(stdout, M_LOG, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Log"));
+        #define LOG(message) \
+    fprintf(stdout, M_LOG, message);
     #endif
 
     #define ASSERT(value, ...) \
@@ -63,6 +67,8 @@ if (value) { \
 
     #define C_INPUT my_client()->cli_input
     #define C_COMMANDS my_client()->commands
+    #define C_BUFFER my_client()->cli_buffer
+    #define C_CONNECTED my_client()->connected
 
 
 #endif /* !MACROS_H_ */
