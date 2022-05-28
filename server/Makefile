@@ -12,6 +12,7 @@ SOURCE	=	src/main.c					\
 			src/client.c				\
 			src/command.c				\
 			src/string_util.c			\
+			src/logs.c			\
 			src/commands/my_cwd.c		\
 			src/commands/my_quit.c		\
 			src/commands/display_cmd.c	\

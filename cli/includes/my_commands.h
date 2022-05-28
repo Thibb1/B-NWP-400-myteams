@@ -25,6 +25,7 @@ static const char *COMMANDS[] = {
     "/create",
     "/list",
     "/info",
+    "/quit",
     NULL
 };
 

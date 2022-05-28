@@ -30,6 +30,12 @@
 
     #define IP "(%s,%d,%d)"
 
+typedef struct server_logs_s
+{
+    char *users_uuids;
+} server_logs_t;
+
+
 typedef struct server_s {
     long port;
     int socket;
@@ -41,6 +47,7 @@ typedef struct server_s {
     int activity;
     int new_socket;
     bool running;
+    server_logs_t logs;
 } server_t;
 
 typedef struct client_s {
@@ -87,5 +94,9 @@ client_t *my_client(int);
 
 void close_socket(int);
 void open_socket(int);
+
+
+void get_file(char *path, char **dest);
+void build_logs();
 
 #endif

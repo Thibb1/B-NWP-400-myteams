@@ -29,6 +29,7 @@ void create_server(void)
         sizeof(struct sockaddr_in)) == -1, "bind");
     ASSERT(listen(S_SOCKET, MAX_CLIENTS) == -1, "listen");
     S_ADLEN = sizeof(S_ADDR);
+    build_logs();
     for (int i = 0; i < MAX_CLIENTS; i++)
         C_SOCKET = 0;
 }

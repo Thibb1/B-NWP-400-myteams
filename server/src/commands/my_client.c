@@ -7,6 +7,12 @@
 
 #include "server.h"
 
+void check_user_uuid(char *pseudo)
+{
+    LOG("Connexion request for ");
+    LOG(pseudo);
+}
+
 void login_server(int i)
 {
     CHECK_ARG(C_CMD[1]);
@@ -17,6 +23,7 @@ void login_server(int i)
     C_CNT = true;
     DESTROY(C_ACC);
     C_ACC = strdup(C_CMD[1]);
+    check_user_uuid(C_CMD[1]);
     dprintf(C_SOCKET, LOGIN);
 }
 
