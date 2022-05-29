@@ -77,7 +77,6 @@ void read_input(void)
 {
     ssize_t read_ret;
 
-
     if ((read_ret = read(my_client()->input, C_BUFFER, 1024)) == 0) {
         close_client();
     } else {

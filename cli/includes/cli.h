@@ -21,26 +21,26 @@
     #include "macros.h"
     #include "my_regex.h"
 
-//  src/struct_init
-//  commands.c
+// src/struct_init
+// commands.c
 
 void init_commmands_func(commands_t *c);
 commands_t *init_commands(void);
 
-//  src
-//  client.c
+// src
+// client.c
 
 void close_client(void);
 void disconnect_client(void);
 void create_client(char **av);
 void run_client(void);
 
-//  funcs.c
+// funcs.c
 
 void default_func(void);
 void exit_program(void);
 
-//  input.c
+// input.c
 
 void get_input(void);
 void help_client(void);
@@ -48,7 +48,7 @@ void handle_command(void);
 void send_input(void);
 void read_input(void);
 
-//  text_utils.c
+// text_utils.c
 
 void to_word_array(char *buff);
 int len_array(char *buff);
@@ -60,7 +60,7 @@ client_t *my_client(void);
 void garbage_delete(void);
 
 // client_command
-//  my_user.c
+// my_user.c
 
 void login_client(void);
 void logout_client(void);

@@ -9,7 +9,7 @@
 
 void get_file(char *path, char **dest)
 {
-    FILE* ptr = fopen(path, "a+");
+    FILE *ptr = fopen(path, "a+");
     int length = 0;
 
     DESTROY(*dest);
@@ -62,7 +62,7 @@ char *get_uuid(char **array, char *name)
     return uuid;
 }
 
-void build_logs()
+void build_logs(void)
 {
     get_file("logs/users_uuids.log", &SERVER->logs.users_uuids_buffer);
     logs_to_array(SERVER->logs.users_uuids_buffer, &SERVER->logs.users_uuids);

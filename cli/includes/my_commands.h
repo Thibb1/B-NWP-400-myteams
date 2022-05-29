@@ -40,7 +40,8 @@ static const char *COMMANDS_HELP[] = {
     "/messages [\"user_uuid\"]"
     RESET " : list all messages exchange with a user",
     "/subscribe [\"team_uuid\"]"
-    RESET " : subscribe to the event of a team and its subdirectories (enable reception of all events from a team)",
+    RESET " : subscribe to the event of a team and its subdirectories "
+    "(enable reception of all events from a team)",
     "/subscribed ?[\"team_uuid\"]"
     RESET " : list all subscribed teams or list all users subscribed to a team",
     "/unsubscribe [\"team_uuid\"]"

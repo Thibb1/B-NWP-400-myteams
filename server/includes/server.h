@@ -33,8 +33,7 @@
 
     #define IP "(%s,%d,%d)"
 
-typedef struct server_logs_s
-{
+typedef struct server_logs_s {
     char *users_uuids_buffer;
     char **users_uuids;
 } server_logs_t;
@@ -97,7 +96,7 @@ void open_socket(int);
 
 
 void get_file(char *path, char **dest);
-void build_logs();
+void build_logs(void);
 char *create_uuid(void);
 char *get_uuid(char **array, char *name);
 
