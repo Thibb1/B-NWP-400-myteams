@@ -10,7 +10,7 @@
 void signal_handler(int sig)
 {
     (void) sig;
-    disconnect_client();
+    close_client();
 }
 
 int main(int ac, char **av)

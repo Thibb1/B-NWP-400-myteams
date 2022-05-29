@@ -50,15 +50,3 @@ uint16_t get_port(int socket)
         return ntohs(sin.sin_port);
     return 0;
 }
-
-void read_output(FILE *f, int i, bool replace)
-{
-    int ch;
-
-    while ((ch = fgetc(f)) != EOF) {
-        if (ch == '\n' && replace)
-            dprintf(C_DTSCT, CR);
-        else
-            dprintf(C_DTSCT, "%c", ch);
-    }
-}

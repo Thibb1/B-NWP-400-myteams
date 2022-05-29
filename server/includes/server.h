@@ -21,6 +21,9 @@
     #include <dirent.h>
     #include <time.h>
     #include <fcntl.h>
+    #include <uuid/uuid.h>
+
+    #include "logging_server.h"
     #include "macros.h"
 
     #define MAX_CLIENTS 100
@@ -53,17 +56,13 @@ typedef struct server_s {
 
 typedef struct client_s {
     char *path;
+    char *uuid;
+    char *name;
+    bool connected;
     int socket;
-    int data;
-    int data_sock;
-    int opt;
-    struct sockaddr_in addr;
-    socklen_t addr_len;
     fd_set read_fds;
     int activity;
     char **cmd;
-    char *acc;
-    bool connected;
 } client_t;
 
 bool dir_ok(char *path);
@@ -77,6 +76,7 @@ void routine_server(void);
 
 void connect_client(void);
 void handle_client(int);
+void close_client(int);
 void disconnect_client(int);
 
 void handle_command(int);
@@ -86,7 +86,6 @@ void to_word_array(int, char *);
 int len_array(char *);
 char *replace(char *, char, char);
 uint16_t get_port(int);
-void read_output(FILE *, int, bool);
 
 void garbage_delete(void);
 server_t *my_server(void);
@@ -99,6 +98,11 @@ void open_socket(int);
 
 void get_file(char *path, char **dest);
 void build_logs();
+char *create_uuid(void);
 char *get_uuid(char **array, char *name);
+
+void login_server(int);
+void logout_server(int);
+void quit_client(int);
 
 #endif

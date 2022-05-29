@@ -9,33 +9,42 @@
 
 void login_client(void)
 {
-    if (C_INPUT[1] == NULL || strlen(C_INPUT[1]) > 32) {
-        LOG(M_SYNTAX);
-        return;
-    }
+    CHECK(C_INPUT[1] == NULL || strlen(C_INPUT[1]) > 32, M_SYNTAX);
     send_input();
     read_input();
-    if (regex_match(C_BUFFER, "^230 .*")) {
-        LOG(C_BUFFER);
+    disconnect_client();
+    if (regex_match(C_BUFFER, "^230 .*$")) {
+        C_NAME = strdup(C_INPUT[1]);
         C_CONNECTED = true;
-    } else {
-        P_ERROR(C_BUFFER);
-        C_CONNECTED = false;
+        read_input();
+        to_word_array(C_BUFFER);
+        C_UUID = strdup(C_INPUT[0]);
+        client_event_logged_in(C_UUID, C_NAME);
     }
 }
 
 void logout_client(void)
 {
-    if (C_CONNECTED) {
-        send_input();
+    CHECK(!C_CONNECTED, M_MUST_BE_LOGGED);
+    send_input();
+    read_input();
+    if (regex_match(C_BUFFER, "^250 .*$")) {
+        client_event_logged_out(C_UUID, C_NAME);
+        disconnect_client();
+    }
+}
+
+void users_client(void)
+{
+    CHECK(!C_CONNECTED, M_MUST_BE_LOGGED);
+    send_input();
+    read_input();
+    CHECK(!regex_match(C_BUFFER, "^200 .*$"), M_SERVER);
+    while (true) {
         read_input();
-        if (regex_match(C_BUFFER, "^231 .*")) {
-            LOG(C_BUFFER);
-            C_CONNECTED = false;
-        } else {
-            P_ERROR(C_BUFFER);
-        }
-    } else {
-        P_ERROR(M_MUST_BE_LOGGED);
+        if (regex_match(C_BUFFER, "^290.*$"))
+            break;
+        to_word_array(C_BUFFER);
+        client_print_users(C_INPUT[0], C_INPUT[1], atoi(C_INPUT[2]));
     }
 }

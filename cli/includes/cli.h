@@ -30,6 +30,7 @@ commands_t *init_commands(void);
 //  src
 //  client.c
 
+void close_client(void);
 void disconnect_client(void);
 void create_client(char **av);
 void run_client(void);
@@ -63,5 +64,6 @@ void garbage_delete(void);
 
 void login_client(void);
 void logout_client(void);
+void users_client(void);
 
 #endif

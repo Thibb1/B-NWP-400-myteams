@@ -83,16 +83,11 @@ if (f) { \
 
     #define CLIENT my_client(i)
     #define C_SOCKET CLIENT->socket
-    #define C_DATA CLIENT->data
-    #define C_DTSCT CLIENT->data_sock
-    #define C_OPT CLIENT->opt
-    #define C_ADDR CLIENT->addr
-    #define C_ADLEN CLIENT->addr_len
-    #define C_PORT C_ADDR.sin_port
     #define C_PATH CLIENT->path
     #define C_CMD CLIENT->cmd
-    #define C_ACC CLIENT->acc
+    #define C_NAME CLIENT->name
     #define C_CNT CLIENT->connected
+    #define C_UUID CLIENT->uuid
     #define SERVER my_server()
     #define S_SOCKET SERVER->socket
     #define S_ADDR SERVER->addr
@@ -109,21 +104,10 @@ if (value) { \
     exit(84); \
 }
 
-    #define CHECK_ARG(v) \
-if (!(v)) { \
-    dprintf(C_SOCKET, COMMAND_ERROR); \
+    #define CHECK(value, error) \
+if (value) { \
+    dprintf(C_SOCKET, error); \
     return; \
 }
 
-    #define CHECK_LOG \
-if (!C_CNT) { \
-    dprintf(C_SOCKET, LOG_IN); \
-    return; \
-}
-
-    #define CHECK_SOCKET \
-if (!C_DTSCT) { \
-    dprintf(C_SOCKET, DATA_CONN); \
-    return; \
-}
 #endif /* !MACROS_H_ */

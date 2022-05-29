@@ -21,6 +21,8 @@ typedef struct client_s {
     bool connected;
     char **cli_input;
     char *cli_buffer;
+    char *uuid;
+    char *name;
     char *ip;
     char *port;
     int input;

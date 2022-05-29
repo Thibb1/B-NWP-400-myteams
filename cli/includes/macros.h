@@ -31,6 +31,7 @@
     #define M_HELP "/help [command] : display help for a command"
     #define M_SYNTAX "Syntax error, parameters or arguments are incorrect"
     #define M_MUST_BE_LOGGED "You must be logged in to do this"
+    #define M_SERVER "Server error"
 
     #define DESTROY(v) \
 if (v) { \
@@ -64,11 +65,17 @@ if (value) { \
     exit(84); \
 }
 
-
     #define C_INPUT my_client()->cli_input
     #define C_COMMANDS my_client()->commands
     #define C_BUFFER my_client()->cli_buffer
     #define C_CONNECTED my_client()->connected
+    #define C_UUID my_client()->uuid
+    #define C_NAME my_client()->name
 
+    #define CHECK(value, message) \
+if (value) { \
+    P_ERROR(message); \
+    return; \
+}
 
 #endif /* !MACROS_H_ */

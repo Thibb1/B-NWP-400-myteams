@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void my_quit(int i)
+void quit_client(int i)
 {
-    disconnect_client(i);
+    close_client(i);
 }

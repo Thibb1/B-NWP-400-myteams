@@ -10,7 +10,7 @@
 void close_server(void)
 {
     for (int i = 0; i < MAX_CLIENTS; i++)
-        disconnect_client(i);
+        close_client(i);
     close(S_SOCKET);
     LOG("Closing server");
 }

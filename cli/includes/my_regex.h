@@ -13,6 +13,6 @@
     #include "macros.h"
 
 bool regex_match(char *str, char *pattern);
-
+char *regex_get_match(char *str, char *pattern);
 
 #endif /* !MY_REGEX_H_ */

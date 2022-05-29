@@ -7,25 +7,19 @@
 
 #include "server.h"
 
-void disconnect_client(int i)
+void close_client(int i)
 {
+    disconnect_client(i);
     if (!C_SOCKET)
         return;
     dprintf(C_SOCKET, LOGOUT);
     FCLOSE(C_SOCKET);
     LOG("Connection closed %s:%d", inet_ntoa(S_ADDR.sin_addr), ntohs(S_PORT));
-    FCLOSE(C_DATA);
-    FCLOSE(C_DTSCT);
-    C_DTSCT = 0;
-    C_DATA = 0;
     C_SOCKET = 0;
     DESTROY(C_CMD);
     DESTROY(C_PATH);
-    DESTROY(C_ACC);
-    C_CNT = false;
     C_CMD = NULL;
     C_PATH = NULL;
-    C_ACC = NULL;
 }
 
 void handle_client(int i)
@@ -35,7 +29,7 @@ void handle_client(int i)
 
     if (FD_ISSET(C_SOCKET, &SERVER->read_fds)) {
         if ((read_ret = read(C_SOCKET, buffer, 1024)) == 0) {
-            disconnect_client(i);
+            close_client(i);
         } else {
             buffer[read_ret] = 0;
             to_word_array(i, buffer);
@@ -49,8 +43,6 @@ void connect_client(void)
     ASSERT((SERVER->new_socket = accept(S_SOCKET, (struct sockaddr *)&S_ADDR,
         &S_ADLEN)) < 0, "accept error");
     LOG("Connection from %s:%d", inet_ntoa(S_ADDR.sin_addr), ntohs(S_PORT));
-    // ASSERT(dprintf(SERVER->new_socket, SERVICE_READY) < 0, "message");
-    LOG("Welcomed new connection");
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (C_SOCKET == 0) {
             C_SOCKET = SERVER->new_socket;

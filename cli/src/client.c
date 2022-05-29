@@ -7,14 +7,24 @@
 
 #include "cli.h"
 
-void disconnect_client(void)
+void close_client(void)
 {
     if (my_client()->input != -1) {
         dprintf(my_client()->input, "/exit\n");
+        read_input();
         close(my_client()->input);
     }
     garbage_delete();
     exit(0);
+}
+
+void disconnect_client(void)
+{
+    DESTROY(C_UUID);
+    DESTROY(C_NAME);
+    C_UUID = NULL;
+    C_NAME = NULL;
+    C_CONNECTED = false;
 }
 
 void create_client(char **av)

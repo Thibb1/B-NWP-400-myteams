@@ -39,7 +39,6 @@ void help_client(void)
     }
 }
 
-
 void get_input(void)
 {
     ssize_t read_ret;
@@ -48,7 +47,7 @@ void get_input(void)
     printf("> ");
     fflush(stdout);
     if ((read_ret = read(STDIN_FILENO, buffer, 1024)) == 0) {
-        disconnect_client();
+        close_client();
     } else {
         buffer[read_ret] = 0;
         to_word_array(buffer);
@@ -80,11 +79,16 @@ void read_input(void)
 
 
     if ((read_ret = read(my_client()->input, C_BUFFER, 1024)) == 0) {
-        disconnect_client();
+        close_client();
     } else {
         C_BUFFER[read_ret] = 0;
         if (regex_match(C_BUFFER, "^221.*$")) {
-            disconnect_client();
+            close_client();
+        } else if (regex_match(C_BUFFER, "^2[0-9]{2}.*$")) {
+            LOG(C_BUFFER);
+        }
+        if (regex_match(C_BUFFER, "^3[0-9]{2}.*$")) {
+            P_ERROR(C_BUFFER);
         }
     }
 }
