@@ -32,7 +32,8 @@
 
 typedef struct server_logs_s
 {
-    char *users_uuids;
+    char *users_uuids_buffer;
+    char **users_uuids;
 } server_logs_t;
 
 
@@ -98,5 +99,6 @@ void open_socket(int);
 
 void get_file(char *path, char **dest);
 void build_logs();
+char *get_uuid(char **array, char *name);
 
 #endif

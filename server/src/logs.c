@@ -24,16 +24,33 @@ void get_file(char *path, char **dest)
     fclose(ptr);
 }
 
-int get_first_of(char *src, char *char_to_find)
+void logs_to_array(char *str, char ***array)
 {
-    for (int pos = 0; src[pos] != '\0'; pos++)
-        for (int pos2 = 0; char_to_find[pos2]; pos2++)
-            if (src[pos] == char_to_find[pos2])
-                return pos;
-    return -1;
+    int len = len_array(str);
+    char *ptr = NULL;
+    int x = 0;
+
+    if (*array)
+        free(*array);
+    (*array) = calloc(len + 1, sizeof(char *));
+    while ((ptr = strtok_r(str, " \n\r", &str)))
+        (*array)[x++] = ptr;
+    (*array)[x] = NULL;
+}
+
+char *get_uuid(char **array, char *name)
+{
+    for (int pos = 1; array[pos - 1] != NULL; pos += 2)
+        if (strcmp(array[pos], name) == 0) {
+            printf("uuid found : %s\n", array[pos]);
+            return array[pos];
+        }
+    printf("uuid not found, need to create new uuid\n");
+    return NULL;
 }
 
 void build_logs()
 {
-    get_file("logs/users_uuids.log", &SERVER->logs.users_uuids);
+    get_file("logs/users_uuids.log", &SERVER->logs.users_uuids_buffer);
+    logs_to_array(SERVER->logs.users_uuids_buffer, &SERVER->logs.users_uuids);
 }

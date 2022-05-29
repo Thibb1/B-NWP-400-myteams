@@ -16,6 +16,7 @@ void check_user_uuid(char *pseudo)
 void login_server(int i)
 {
     CHECK_ARG(C_CMD[1]);
+    get_uuid(SERVER->logs.users_uuids, C_CMD[1]);
     if (C_ACC && !strcmp(C_CMD[1], C_ACC) && C_CNT) {
         dprintf(C_SOCKET, LOGIN);
         return;

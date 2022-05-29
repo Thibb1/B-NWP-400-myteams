@@ -34,6 +34,7 @@ client_t *my_client(int idx)
 
 void garbage_delete(void)
 {
+    DESTROY(SERVER->logs.users_uuids_buffer);
     DESTROY(SERVER->logs.users_uuids);
     DESTROY(my_server());
     for (int i = 0; i < MAX_CLIENTS; i++) {
