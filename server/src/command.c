@@ -13,21 +13,21 @@ void handle_command(int i)
     int x = 0;
 
     if (!C_CMD || !C_CMD[0]) {
-        dprintf(C_SOCKET, SYNTAX_ERROR);
+        dprintf(C_SOCKET, M_SYNTAX);
         return;
     }
     LOG("Recieved a new message...");
     do {
-        LOG(C_CMD[x]);
+        LOG("%s", C_CMD[x]);
     } while(C_CMD[++x]);
     x = 0;
     for (; COMMANDS[x] && strcmp(COMMANDS[x], C_CMD[0]); x++);
     if (COMMANDS[x] && COMMANDS_FUNC[x])
         COMMANDS_FUNC[x](i);
     else if (COMMANDS[x])
-        dprintf(C_SOCKET, NOT_IMPL, C_CMD[0]);
+        dprintf(C_SOCKET, M_IMPLEMENTED);
     else
-        dprintf(C_SOCKET, SYNTAX_ERROR);
+        dprintf(C_SOCKET, M_SYNTAX);
 }
 
 char *commands_with_args(char *cmd, int i)

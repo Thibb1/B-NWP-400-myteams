@@ -10,18 +10,18 @@
 void check_user_uuid(char *pseudo)
 {
     LOG("Connexion request for ");
-    LOG(pseudo);
+    LOG("%s", pseudo);
 }
 
 void login_server(int i)
 {
-    CHECK(!C_CMD[1], COMMAND_ERROR);
+    CHECK(!C_CMD[1], M_SYNTAX);
     disconnect_client(i);
     C_UUID = get_uuid(SERVER->logs.users_uuids, C_CMD[1]);
     C_CNT = true;
     C_NAME = strdup(C_CMD[1]);
     check_user_uuid(C_CMD[1]);
-    dprintf(C_SOCKET, LOGIN);
+    dprintf(C_SOCKET, M_LOGIN);
     dprintf(C_SOCKET, "%s" CR, C_UUID);
     server_event_user_logged_in(C_UUID);
 }
@@ -39,9 +39,9 @@ void logout_server(int i)
 {
     if (C_CNT) {
         server_event_user_logged_out(C_UUID);
-        dprintf(C_SOCKET, USER_LOGOUT);
+        dprintf(C_SOCKET, M_LOGOUT);
         disconnect_client(i);
     } else {
-        dprintf(C_SOCKET, LOG_IN);
+        dprintf(C_SOCKET, M_LOGIN);
     }
 }

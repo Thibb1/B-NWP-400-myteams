@@ -32,7 +32,7 @@ void help_client(void)
         y = 0;
         for (; COMMANDS[y] && strcmp(COMMANDS[y], C_INPUT[x]); y++);
         if (COMMANDS_HELP[y]) {
-            LOG(COMMANDS_HELP[y]);
+            LOG("%s", COMMANDS_HELP[y]);
         } else {
             P_ERROR(M_SYNTAX);
         }
@@ -76,18 +76,25 @@ void send_input(void)
 void read_input(void)
 {
     ssize_t read_ret;
+    char *code = NULL;
 
     if ((read_ret = read(my_client()->input, C_BUFFER, 1024)) == 0) {
         close_client();
     } else {
         C_BUFFER[read_ret] = 0;
-        if (regex_match(C_BUFFER, "^221.*$")) {
+        if (!regex_match(C_BUFFER, "[0-9]{3} .*$"))
+            return;
+        code = regex_get_match(C_BUFFER, "^([0-9]{3}) .*$");
+        LOG("%s", code);
+        DESTROY(code);
+        if (regex_match(C_BUFFER, "^251 .*$")) {
             close_client();
         } else if (regex_match(C_BUFFER, "^2[0-9]{2}.*$")) {
-            LOG(C_BUFFER);
+            LOG("%s", C_BUFFER);
         }
         if (regex_match(C_BUFFER, "^3[0-9]{2}.*$")) {
-            P_ERROR(C_BUFFER);
+            client_error_unauthorized();
+            P_ERROR("%s", C_BUFFER);
         }
     }
 }

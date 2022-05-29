@@ -19,6 +19,7 @@
     #define BLUE "\033[34m"
     #define ORANGE "\033[38;5;208m"
     #define BOLD "\033[1m"
+    #define CR "\r\n"
 
     #define M_USAGE "USAGE: ./myteams_cli ip port\n" \
     "\tip is the server ip address on which the server socket listens\n" \
@@ -38,24 +39,20 @@ if (v) { \
     free(v); \
 }
 
-    #define DEF_OR_ARG(value, ...) value
-
     #ifdef DEBUG
         #define M_ERROR BOLD RED "[%s:%d] " RESET BOLD "%s " RESET
-        #define P_ERROR(...) \
+        #define P_ERROR(f, ...) \
     fprintf(stdout, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stdout, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
+    fprintf(stdout, "(" f ")" CR, ##__VA_ARGS__);
         #define M_LOG BOLD BLUE "[%s:%d] " RESET BOLD "%s " RESET
-        #define LOG(message) \
+        #define LOG(f, ...) \
     fprintf(stdout, M_LOG, __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stdout, "(%s)\n", message);
+    fprintf(stdout, "(" f ")" CR, ##__VA_ARGS__);
     #else
-        #define M_ERROR BOLD RED "%s\n" RESET
-        #define P_ERROR(...) \
-    fprintf(stdout, M_ERROR, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
-        #define M_LOG BOLD BLUE "%s\n" RESET
-        #define LOG(message) \
-    fprintf(stdout, M_LOG, message);
+        #define P_ERROR(f, ...) \
+    fprintf(stdout, BOLD RED f RESET CR, ##__VA_ARGS__);
+        #define LOG(f, ...) \
+    fprintf(stdout, BOLD BLUE f RESET CR, ##__VA_ARGS__);
     #endif
 
     #define ASSERT(value, ...) \
@@ -72,9 +69,9 @@ if (value) { \
     #define C_UUID my_client()->uuid
     #define C_NAME my_client()->name
 
-    #define CHECK(value, message) \
+    #define CHECK(value, error) \
 if (value) { \
-    P_ERROR(message); \
+    P_ERROR(error); \
     return; \
 }
 

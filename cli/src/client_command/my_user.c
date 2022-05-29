@@ -13,7 +13,7 @@ void login_client(void)
     send_input();
     read_input();
     disconnect_client();
-    if (regex_match(C_BUFFER, "^230 .*$")) {
+    if (regex_match(C_BUFFER, "^201 .*$")) {
         C_NAME = strdup(C_INPUT[1]);
         C_CONNECTED = true;
         read_input();
@@ -42,9 +42,14 @@ void users_client(void)
     CHECK(!regex_match(C_BUFFER, "^200 .*$"), M_SERVER);
     while (true) {
         read_input();
-        if (regex_match(C_BUFFER, "^290.*$"))
+        if (regex_match(C_BUFFER, "^290 .*$"))
             break;
         to_word_array(C_BUFFER);
         client_print_users(C_INPUT[0], C_INPUT[1], atoi(C_INPUT[2]));
     }
+}
+
+void user_client(void)
+{
+
 }

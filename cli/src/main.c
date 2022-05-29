@@ -20,7 +20,8 @@ int main(int ac, char **av)
     ASSERT(!regex_match(av[2], "^[1-9][0-9]{,4}$"), M_PORT);
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
-    create_client(av);
-    run_client();
+    create_client_connection(av);
+    while (1)
+        get_input();
     return 0;
 }

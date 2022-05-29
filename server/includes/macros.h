@@ -21,36 +21,20 @@
     #define BOLD "\033[1m"
     #define CR "\r\n"
 
+    #define M_OK "200 " BOLD GREEN "OK" RESET CR
+    #define M_LOGIN "201 " BOLD GREEN "User logged in" RESET CR
+    #define M_SENT "202 " BOLD GREEN "Message sent" RESET CR
+    #define M_SUBSCRIBED "211 " BOLD GREEN "Subscribed" RESET CR
+    #define M_UNSUBSCRIBED "219 " BOLD GREEN "Unsubscribed" RESET CR
+    #define M_LOGOUT "250 " BOLD RED "User logged out" RESET CR
+    #define M_CLOSED "251 " BOLD RED "Server connection closed" RESET CR
+    #define M_DATA "290 " BOLD GREEN "Data sent" RESET CR
 
-//DEBUG
-    #define OPENING "150 " BOLD GREEN "File status okay; about to open data" \
-    " connection." RESET CR
-    #define NOOP "200 " BOLD GREEN "Command ok." RESET CR
-    #define HELP "214 " BOLD BLUE "%s" RESET CR
-    #define HELP_LIST "214 " BOLD BLUE "[USER, PASS, CWD, CDUP, QUIT, DELE," \
-    " PWD, PASV, PORT, HELP, NOOP, RETR, STOR, LIST]" RESET CR
-    #define SERVICE_READY "220 " BOLD GREEN "Service ready for new user." \
-    RESET CR
-    #define LOGOUT "221 " BOLD RED "Disconnected" RESET CR
-    #define DATA_CLOS "226 " BOLD GREEN "Closing data connection." RESET CR
-    #define PASV "227 " BOLD GREEN "Entering Passive Mode " RESET IP CR
-    #define LOGIN "230 " BOLD GREEN "User logged in" RESET CR
-    #define USER_LOGOUT "231 " BOLD RED "User logged out" RESET CR
-    #define DELE "250 " BOLD ORANGE "%s deleted" RESET CR
-    #define DIR_CHANGED "250 " BOLD GREEN "%s" RESET CR
-    #define ACC_OK "331 " BOLD GREEN "User name okay, need password." RESET CR
-    #define ACC_KO "332 " BOLD RED "Need account for login." RESET CR
-    #define DATA_CONN "425 " BOLD RED "Can't open data connection." RESET CR
-    #define FILE_ERR "452 " BOLD RED "File transfer error." RESET CR
-    #define SYNTAX_ERROR "500 " BOLD RED "Syntax error, command " \
-    "unrecognized." RESET CR
-    #define COMMAND_ERROR "501 " BOLD RED "Syntax error in parameters or" \
-    " arguments" RESET CR
-    #define NOT_IMPL "502 " BOLD RED "Command not implemented. (%s)" RESET CR
-    #define LOG_IN "530 " BOLD RED "Not logged in." RESET CR
-    #define FOLDER_ERROR "550 " BOLD RED "%s Folder error" RESET CR
-    #define FILE_ERROR "550 " BOLD RED "%s File error" RESET CR
-
+    #define M_KO "300 " BOLD RED "KO" RESET CR
+    #define M_NOT_LOGGED "301 " BOLD RED "Unauthenticated" RESET CR
+    #define M_NOT_FOUND "302 " BOLD RED "Unknown command" RESET CR
+    #define M_SYNTAX "303 " BOLD RED "Syntax error" RESET CR
+    #define M_IMPLEMENTED "304 " BOLD RED "Command not implemented" RESET CR
 
     #define DESTROY(v) \
 if (v) { \
@@ -62,22 +46,20 @@ if (f) { \
     close(f); \
 }
 
-    #ifdef DEBUG
+    #ifndef DEBUG
         #define M_ERROR BOLD RED "[%s:%d] " RESET BOLD "%s " RESET
-        #define P_ERROR(...) \
+        #define P_ERROR(f, ...) \
     fprintf(stdout, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stdout, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
+    fprintf(stdout, "(" f ")" CR, ##__VA_ARGS__);
         #define M_LOG BOLD BLUE "[%s:%d] " RESET BOLD "%s " RESET
-        #define LOG(...) \
+        #define LOG(f, ...) \
     fprintf(stdout, M_LOG, __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stdout, "(%s)\n", DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Log"));
+    fprintf(stdout, "(" f ")" CR, ##__VA_ARGS__);
     #else
-        #define M_ERROR BOLD RED "%s\n" RESET
-        #define P_ERROR(...) \
-    fprintf(stdout, M_ERROR, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Error"));
-        #define M_LOG BOLD BLUE "%s\n" RESET
-        #define LOG(...) \
-    fprintf(stdout, M_LOG, DEF_OR_ARG(__VA_ARGS__ __VA_OPT__(,) "Log"));
+        #define P_ERROR(f, ...) \
+    fprintf(stdout, BOLD RED f RESET CR, ##__VA_ARGS__);
+        #define LOG(f, ...) \
+    fprintf(stdout, BOLD BLUE f RESET CR, ##__VA_ARGS__);
     #endif
 
 
@@ -94,8 +76,6 @@ if (f) { \
     #define S_ADLEN SERVER->addr_len
     #define S_OPT SERVER->opt
     #define S_PORT S_ADDR.sin_port
-
-    #define DEF_OR_ARG(value, ...) value
 
     #define ASSERT(value, ...) \
 if (value) { \
