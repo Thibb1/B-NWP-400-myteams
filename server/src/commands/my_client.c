@@ -18,7 +18,7 @@ void login_server(int i)
     CHECK(!C_CMD[1], E_SYNTAX);
     CHECK(C_CONNECTED, E_KO);
     disconnect_client(i);
-    C_UUID = get_uuid(C_CMD[1]);
+    C_UUID = get_user_uuid(C_CMD[1]);
     C_CONNECTED = true;
     C_NAME = strdup(C_CMD[1]);
     check_user_uuid(C_CMD[1]);

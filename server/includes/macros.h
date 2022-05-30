@@ -82,6 +82,9 @@ if (f) { \
     #define C_CONNECTED CLIENT->connected
     #define C_OUT CLIENT->out
     #define C_UUID CLIENT->uuid
+    #define C_TEAM CLIENT->team
+    #define C_CHANNEL CLIENT->channel
+    #define C_THREAD CLIENT->thread
 
     #define SERVER my_server()
     #define S_SOCKET SERVER->socket
@@ -117,6 +120,16 @@ do { \
 do { \
     fprintf(C_STREAM, f, ##__VA_ARGS__); \
     fflush(C_STREAM); \
+} while (0);
+
+    #define FOLDER(f, ...) \
+do { \
+    struct stat st; \
+    char path[1024]; \
+    sprintf(path, f, ##__VA_ARGS__); \
+    if (stat(path, &st) == -1) { \
+        mkdir(path, 0700); \
+    } \
 } while (0);
 
 #endif /* !MACROS_H_ */

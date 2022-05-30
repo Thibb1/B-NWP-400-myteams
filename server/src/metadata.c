@@ -35,7 +35,9 @@ client_t *my_client(int idx)
 void garbage_delete(void)
 {
     DESTROY(SERVER->logs.users_uuids_buffer);
-    free_list(SERVER->users);
+    DESTROY(SERVER->logs.teams_uuids_buffer);
+    free_users(SERVER->users);
+    free_teams(SERVER->teams);
     DESTROY(my_server());
     for (int i = 0; i < MAX_CLIENTS; i++) {
         DESTROY(C_PATH);

@@ -36,12 +36,3 @@ void to_word_array(int i, char *buff)
     }
     C_CMD[x] = NULL;
 }
-
-char *replace(char *str, char from, char to)
-{
-    char *ptr = str;
-
-    while ((ptr = strchr(ptr, from)) != NULL)
-        *ptr++ = to;
-    return str;
-}

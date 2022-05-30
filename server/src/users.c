@@ -7,7 +7,23 @@
 
 #include "server.h"
 
-void free_list(user_t *list)
+void build_users(char *str)
+{
+    char *ptr = NULL;
+    char *uuid = NULL;
+    char *name = NULL;
+
+    while ((ptr = strtok_r(str, "\n", &str))) {
+        if (strlen(ptr) > 0) {
+            uuid = strtok_r(ptr, " ", &ptr);
+            name = strtok_r(ptr, " ", &ptr);
+            add_user(uuid, name);
+            server_event_user_loaded(uuid, name);
+        }
+    }
+}
+
+void free_users(user_t *list)
 {
     user_t *tmp = list;
     user_t *tmp2 = NULL;

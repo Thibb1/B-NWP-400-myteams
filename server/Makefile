@@ -10,10 +10,14 @@ SOURCE	=	src/main.c					\
 			src/metadata.c				\
 			src/server.c				\
 			src/client.c				\
-			src/linked_list.c			\
+			src/users.c					\
+			src/teams.c					\
+			src/channels.c				\
+			src/threads.c				\
 			src/command.c				\
 			src/string_util.c			\
 			src/logs.c					\
+			src/uuid.c					\
 			src/commands/my_quit.c		\
 			src/commands/my_client.c	\
 			src/commands/users.c

@@ -22,55 +22,13 @@ void get_file(char *path, char **dest)
     fclose(ptr);
 }
 
-void build_users(char *str)
-{
-    char *ptr = NULL;
-    char *uuid = NULL;
-    char *name = NULL;
-
-    while ((ptr = strtok_r(str, "\n", &str))) {
-        if (strlen(ptr) > 0) {
-            LOG("%s", ptr);
-            uuid = strtok_r(ptr, " ", &ptr);
-            name = strtok_r(ptr, " ", &ptr);
-            add_user(uuid, name);
-            server_event_user_loaded(uuid, name);
-        }
-    }
-}
-
-char *create_uuid(void)
-{
-    char *uuid = calloc(37, sizeof(char));
-    uuid_t uuid_t;
-
-    ASSERT(NULL == uuid, "uuid can't be created\n");
-    uuid_generate_random(uuid_t);
-    uuid_unparse(uuid_t, uuid);
-    return uuid;
-}
-
-char *get_uuid(char *name)
-{
-    char *uuid = NULL;
-    user_t *user = SERVER->users;
-
-    while (user) {
-        if (!strcmp(user->name, name)) {
-            user->connected = true;
-            return strdup(user->uuid);
-        }
-        user = user->next;
-    }
-    uuid = create_uuid();
-    add_user(uuid, name);
-    server_event_user_created(uuid, name);
-    APPEND("logs/users_uuids.log", "%s %s\n", uuid, name);
-    return uuid;
-}
-
 void build_logs(void)
 {
+    FOLDER("logs");
+    FOLDER("logs/teams");
+    FOLDER("logs/users");
     get_file("logs/users_uuids.log", &SERVER->logs.users_uuids_buffer);
+    get_file("logs/teams_uuids.log", &SERVER->logs.teams_uuids_buffer);
     build_users(SERVER->logs.users_uuids_buffer);
+    build_teams(SERVER->logs.teams_uuids_buffer);
 }

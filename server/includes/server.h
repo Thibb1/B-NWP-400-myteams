@@ -22,6 +22,7 @@
     #include <time.h>
     #include <fcntl.h>
     #include <uuid/uuid.h>
+    #include <sys/stat.h>
 
     #include "logging_server.h"
     #include "macros.h"
@@ -35,6 +36,7 @@
 
 typedef struct server_logs_s {
     char *users_uuids_buffer;
+    char *teams_uuids_buffer;
 } server_logs_t;
 
 
@@ -45,6 +47,35 @@ typedef struct user_s {
     bool connected;
     struct user_s *next;
 } user_t;
+
+// linked list of channels
+typedef struct channel_s {
+    char *uuid;
+    char *name;
+    char *description;
+    struct channel_s *next;
+} channel_t;
+
+// linked list of threads
+typedef struct thread_s {
+    char *uuid;
+    char *title;
+    char *body;
+    char *channel_uuid;
+    char *author_uuid;
+    struct thread_s *next;
+} thread_t;
+
+// linked list of teams
+typedef struct team_s {
+    char *uuid;
+    char *name;
+    char *creator_uuid;
+    thread_t *threads;
+    channel_t *channels;
+    struct team_s *next;
+} team_t;
+
 
 typedef struct server_s {
     long port;
@@ -58,6 +89,7 @@ typedef struct server_s {
     int new_socket;
     bool running;
     user_t *users;
+    team_t *teams;
     server_logs_t logs;
 } server_t;
 
@@ -70,6 +102,9 @@ typedef struct client_s {
     int socket;
     FILE *stream;
     fd_set read_fds;
+    team_t *team;
+    channel_t *channel;
+    thread_t *thread;
     int activity;
     char **cmd;
 } client_t;
@@ -104,8 +139,9 @@ void open_socket(int);
 
 void get_file(char *path, char **dest);
 void build_logs(void);
+
 char *create_uuid(void);
-char *get_uuid(char *name);
+char *get_user_uuid(char *name);
 
 void login_server(int);
 void logout_server(int);
@@ -114,7 +150,23 @@ void quit_client(int);
 void users_server(int);
 void user_server(int);
 
-void free_list(user_t *list);
+void build_users(char *str);
+void free_users(user_t *list);
 void add_user(char *uuid, char *name);
 user_t *get_user(char *uuid);
+
+void build_teams(char *str);
+void free_teams(team_t *list);
+void add_team(char *uuid, char *creator_uuid, char *name);
+team_t *get_team(char *uuid);
+
+void build_threads(thread_t **threads, char *str);
+void free_threads(thread_t *list);
+void load_threads(thread_t **threads, char *uuid);
+void add_thread(int i, char *uuid, char *title, char *body);
+
+void build_channels(channel_t **channels, char *str);
+void free_channels(channel_t *list);
+void load_channels(channel_t **channels, char *uuid);
+void add_channel(char *team_uuid, char *uuid, char *name, char *description);
 #endif
