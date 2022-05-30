@@ -36,3 +36,26 @@ char *get_user_uuid(char *name)
     APPEND("logs/users_uuids.log", "%s %s\n", uuid, name);
     return uuid;
 }
+
+channel_t *get_channel_name(team_t *team, char *name)
+{
+    channel_t *channel = team->channels;
+    while (channel) {
+        if (strcmp(channel->name, name) == 0)
+            return channel;
+        channel = channel->next;
+    }
+    return NULL;
+}
+
+thread_t *get_thread_name(team_t *team, channel_t *channel, char *name)
+{
+    thread_t *thread = team->threads;
+    while (thread) {
+        if (strcmp(thread->title, name) == 0 &&
+            strcmp(thread->channel_uuid, channel->uuid) == 0)
+            return thread;
+        thread = thread->next;
+    }
+    return NULL;
+}

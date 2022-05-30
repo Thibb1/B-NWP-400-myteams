@@ -17,6 +17,7 @@ x2x message answer
 x3x team answer
 x4x thread answer
 x5x unclassified answer
+x6x channel answer
 ```
 
 ## Digit 3

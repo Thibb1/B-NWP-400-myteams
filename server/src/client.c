@@ -49,6 +49,7 @@ void connect_client(void)
             C_SOCKET = SERVER->new_socket;
             C_STREAM = fdopen(C_SOCKET, "r+");
             C_CONNECTED = false;
+            use_nothing(i);
             return;
         }
     }

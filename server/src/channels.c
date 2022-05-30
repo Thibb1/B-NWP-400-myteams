@@ -50,14 +50,28 @@ void load_channels(channel_t **channels, char *uuid)
     DESTROY(file);
 }
 
-void add_channel(char *team_uuid, char *uuid, char *name, char *description)
+void add_channel(char *team_uuid, char *name, char *description)
 {
     team_t *team = get_team(team_uuid);
+    char path[1024];
     channel_t *channel = calloc(1, sizeof(channel_t));
-    channel->uuid = strdup(uuid);
+    channel->uuid = create_uuid();
     channel->name = strdup(name);
     channel->description = strdup(description);
     channel->next = team->channels;
     team->channels = channel;
-    server_event_channel_created(team_uuid, uuid, name);
+    server_event_channel_created(team_uuid, channel->uuid, name);
+    snprintf(path, 1024, "logs/teams/%s/channels_uuids.log", team_uuid);
+    APPEND(path, "%s %s\"%s\n", channel->uuid, name, description);
+}
+
+channel_t *get_channel(team_t *team, char *uuid)
+{
+    channel_t *channel = team->channels;
+    while (channel) {
+        if (strcmp(channel->uuid, uuid) == 0)
+            return channel;
+        channel = channel->next;
+    }
+    return NULL;
 }

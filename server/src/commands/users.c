@@ -16,7 +16,7 @@ void users_server(int i)
         SEND(i, M_USERS, user->uuid, user->connected, user->name);
         user = user->next;
         handle_client(i);
-        CHECK(!C_CMD[0] || !strcmp(C_CMD[0], "200"), E_KO);
+        CHECK(!C_CMD[0] || strcmp(C_CMD[0], "200"), E_KO);
     }
     SEND(i, M_END);
 }

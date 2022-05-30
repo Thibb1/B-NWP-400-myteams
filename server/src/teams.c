@@ -17,7 +17,8 @@ void build_teams(char *str)
             team = calloc(1, sizeof(team_t));
             team->uuid = strdup(strtok_r(ptr, " ", &ptr));
             team->creator_uuid = strdup(strtok_r(ptr, " ", &ptr));
-            team->name = strdup(strtok_r(ptr, " ", &ptr));
+            team->name = strdup(strtok_r(ptr, "\"", &ptr));
+            team->description = strdup(strtok_r(ptr, "\"", &ptr));
             team->next = SERVER->teams;
             SERVER->teams = team;
             FOLDER("logs/teams/%s", team->uuid);
@@ -37,6 +38,7 @@ void free_teams(team_t *list)
         DESTROY(tmp->uuid);
         DESTROY(tmp->name);
         DESTROY(tmp->creator_uuid);
+        DESTROY(tmp->description);
         free_threads(tmp->threads);
         free_channels(tmp->channels);
         DESTROY(tmp);
@@ -44,17 +46,20 @@ void free_teams(team_t *list)
     }
 }
 
-void add_team(char *uuid, char *creator_uuid, char *name)
+void add_team(char *creator_uuid, char *name, char *description)
 {
     team_t *team = calloc(1, sizeof(team_t));
-    team->uuid = strdup(uuid);
+    team->uuid = create_uuid();
     team->name = strdup(name);
     team->creator_uuid = strdup(creator_uuid);
+    team->description = strdup(description);
     team->threads = NULL;
     team->channels = NULL;
     team->next = SERVER->teams;
-    FOLDER("logs/teams/%s", uuid);
-    server_event_team_created(uuid, creator_uuid, name);
+    server_event_team_created(team->uuid, name, creator_uuid);
+    APPEND("logs/teams_uuids.log", "%s %s %s\"%s\n", team->uuid,
+        creator_uuid, name, description);
+    FOLDER("logs/teams/%s", team->uuid);
     SERVER->teams = team;
 }
 
@@ -64,6 +69,17 @@ team_t *get_team(char *uuid)
 
     while (team) {
         if (!strcmp(team->uuid, uuid))
+            return team;
+        team = team->next;
+    }
+    return NULL;
+}
+
+team_t *get_team_name(char *name)
+{
+    team_t *team = SERVER->teams;
+    while (team) {
+        if (!strcmp(team->name, name))
             return team;
         team = team->next;
     }

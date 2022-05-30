@@ -20,6 +20,10 @@ SOURCE	=	src/main.c					\
 			src/uuid.c					\
 			src/commands/my_quit.c		\
 			src/commands/my_client.c	\
+			src/commands/teams.c		\
+			src/commands/threads.c		\
+			src/commands/channels.c		\
+			src/commands/call_command.c \
 			src/commands/users.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams

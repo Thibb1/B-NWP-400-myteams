@@ -38,10 +38,10 @@ static void (*COMMANDS_FUNC[])(int) = {
     NULL,
     NULL,
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    use_server,
+    create_state_server,
+    list_server,
+    info_server,
     quit_client,
     NULL
 };

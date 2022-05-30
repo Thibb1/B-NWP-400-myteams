@@ -61,6 +61,7 @@ typedef struct thread_s {
     char *uuid;
     char *title;
     char *body;
+    time_t created_at;
     char *channel_uuid;
     char *author_uuid;
     struct thread_s *next;
@@ -71,6 +72,7 @@ typedef struct team_s {
     char *uuid;
     char *name;
     char *creator_uuid;
+    char *description;
     thread_t *threads;
     channel_t *channels;
     struct team_s *next;
@@ -157,16 +159,42 @@ user_t *get_user(char *uuid);
 
 void build_teams(char *str);
 void free_teams(team_t *list);
-void add_team(char *uuid, char *creator_uuid, char *name);
+void add_team(char *creator_uuid, char *name, char *description);
 team_t *get_team(char *uuid);
+team_t *get_team_name(char *name);
 
 void build_threads(thread_t **threads, char *str);
 void free_threads(thread_t *list);
 void load_threads(thread_t **threads, char *uuid);
-void add_thread(int i, char *uuid, char *title, char *body);
+void add_thread(int i, char *title, char *body);
+thread_t *get_thread(team_t *team, channel_t *channel, char *uuid);
+thread_t *get_thread_name(team_t *team, channel_t *channel, char *name);
 
 void build_channels(channel_t **channels, char *str);
 void free_channels(channel_t *list);
 void load_channels(channel_t **channels, char *uuid);
-void add_channel(char *team_uuid, char *uuid, char *name, char *description);
+void add_channel(char *team_uuid, char *name, char *description);
+channel_t *get_channel(team_t *team, char *uuid);
+channel_t *get_channel_name(team_t *team, char *name);
+
+void list_server(int);
+void create_state_server(int);
+void use_server(int);
+void info_server(int);
+
+void create_team(int);
+void list_team(int);
+void use_team(int);
+void use_nothing(int);
+
+void create_channel(int);
+void list_channel(int);
+void use_channel(int);
+
+void create_thread(int);
+void list_thread(int);
+void use_thread(int);
+
+void create_reply(int);
+void list_reply(int);
 #endif

@@ -26,6 +26,12 @@
     #define M_LOGOUT "212 " BOLD RED "User logged out" RESET CR
     #define M_USERS "214 \"%s\" \"%d\" \"%s\"" CR
     #define M_USER "215 \"%s\" \"%d\" \"%s\"" CR
+    #define M_TEAM_C "231 %s" BOLD GREEN " team created" RESET CR
+    #define M_TEAM_L "234 \"%s\" \"%s\" \"%s\"" CR
+    #define M_THREAD_C "241 %s \"%d\"" BOLD GREEN " thread created" RESET CR
+    #define M_THREAD_L "244 \"%s\" \"%s\" \"%s\" \"%s\" \"%d\"" CR
+    #define M_CHANNEL_C "261 %s" BOLD GREEN " channel created" RESET CR
+    #define M_CHANNEL_L "264 \"%s\" \"%s\" \"%s\"" CR
     #define M_CLOSED "250 " BOLD RED "Connection closed" RESET CR
     #define M_END "253 " BOLD GREEN "End of transmission" RESET CR
 
@@ -104,6 +110,12 @@ if (value) { \
     #define CHECK(value, error) \
 if (value) { \
     SEND(i, error); \
+    return; \
+}
+
+    #define STATE(value, func, i) \
+if ((value)) { \
+    func(i); \
     return; \
 }
 
