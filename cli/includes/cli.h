@@ -15,6 +15,7 @@
     #include <unistd.h>
     #include <stdlib.h>
     #include <signal.h>
+    #include <time.h>
 
     #include "logging_client.h"
     #include "client.h"
@@ -52,6 +53,7 @@ void read_input(void);
 
 void to_word_array(char *buff, char ***array);
 int len_array(char *buff);
+void read_stream(FILE *stream);
 
 
 // metatdata.c
@@ -66,6 +68,7 @@ void login_client(void);
 
 // handle_server.c
 void handle_server_code(int);
+void handle_server_error(int);
 void parse_uuid(void);
 void get_next(void);
 #endif

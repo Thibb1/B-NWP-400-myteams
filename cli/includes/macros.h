@@ -80,7 +80,7 @@ if (value) { \
     #define C_INPUT my_client()->cli_input
     #define C_COMMANDS my_client()->commands
     #define C_BUFFER my_client()->cli_buffer
-    #define C_SERVER my_client()->server_buffer
+    #define C_OUT my_client()->server_buffer
     #define C_CONNECTED my_client()->connected
     #define C_UUID my_client()->uuid
     #define C_NAME my_client()->name

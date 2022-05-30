@@ -39,3 +39,15 @@ void to_word_array(char *buff, char ***array)
     (*array)[x] = NULL;
     DESTROY(cpy);
 }
+
+void read_stream(FILE *stream)
+{
+    size_t len = 0;
+    ssize_t read;
+
+    DESTROY(C_BUFFER);
+    C_BUFFER = NULL;
+    if ((read = getline(&C_BUFFER, &len, stream)) == -1) {
+        close_client();
+    }
+}
