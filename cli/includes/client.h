@@ -27,6 +27,7 @@ typedef struct client_s {
     int input;
     FILE *stream;
     struct sockaddr_in server;
+    fd_set read_fds;
     commands_t *commands;
 } client_t;
 

@@ -18,9 +18,3 @@ void login_client(void)
     C_CONNECTED = true;
     C_UUID = strdup(C_REG);
 }
-
-void default_func(void)
-{
-    send_input();
-    read_input();
-}

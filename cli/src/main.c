@@ -22,6 +22,6 @@ int main(int ac, char **av)
     signal(SIGTERM, signal_handler);
     create_client_connection(av);
     while (1)
-        get_input();
+        run_client();
     return 0;
 }

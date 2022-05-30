@@ -53,4 +53,26 @@ void create_client(void)
     my_client()->cli_buffer = NULL;
     my_client()->server_buffer = NULL;
     my_client()->commands = init_commands();
+
+}
+
+void run_client(void)
+{
+    int ret;
+    FD_ZERO(&my_client()->read_fds);
+    FD_SET(STDIN_FILENO, &my_client()->read_fds);
+    FD_SET(C_FD, &my_client()->read_fds);
+    ret = select(C_FD + 1, &my_client()->read_fds, NULL, NULL, NULL);
+    if (ret == -1) {
+        P_ERROR("Select error");
+        close_client();
+    } else if (ret == 0) {
+        return;
+    }
+    if (FD_ISSET(STDIN_FILENO, &my_client()->read_fds)) {
+        get_input();
+    }
+    if (FD_ISSET(C_FD, &my_client()->read_fds)) {
+        read_input();
+    }
 }

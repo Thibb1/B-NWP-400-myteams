@@ -35,11 +35,7 @@ void close_client(void);
 void disconnect_client(void);
 void create_client_connection(char **av);
 void create_client(void);
-
-// funcs.c
-
-void default_func(void);
-void exit_program(void);
+void run_client(void);
 
 // input.c
 
