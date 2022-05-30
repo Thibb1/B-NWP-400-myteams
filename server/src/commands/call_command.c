@@ -29,7 +29,6 @@ void use_server(int i)
     int len = 0;
     CHECK(!C_CONNECTED, E_UNAUTHORIZED);
     while(C_CMD[len++]);
-    LOG("len: %d", len);
     STATE(len == 7, use_thread, i);
     STATE(len == 5, use_channel, i);
     STATE(len == 3, use_team, i);
@@ -39,5 +38,9 @@ void use_server(int i)
 
 void info_server(int i)
 {
-    (void) i;
+    CHECK(!C_CONNECTED, E_UNAUTHORIZED);
+    STATE(C_THREAD != NULL, info_thread, i);
+    STATE(C_CHANNEL != NULL, info_channel, i);
+    STATE(C_TEAM != NULL, info_team, i);
+    users_server(i);
 }

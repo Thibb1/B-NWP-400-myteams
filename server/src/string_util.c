@@ -27,7 +27,7 @@ void to_word_array(int i, char *buff)
 
     DESTROY_ARRAY(C_CMD);
     C_CMD = calloc(len + 1, sizeof(char *));
-        if ((ptr = strtok_r(buff, " \n", &buff))) {
+    if ((ptr = strtok_r(buff, " \n", &buff))) {
         C_CMD[x++] = strdup(ptr);
         while ((ptr = strtok_r(buff, "\"\n", &buff)))
             C_CMD[x++] = strdup(ptr);

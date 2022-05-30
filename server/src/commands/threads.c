@@ -10,7 +10,8 @@
 void create_thread(int i)
 {
     thread_t *thread = NULL;
-    CHECK(!C_CMD[1] || !C_CMD[3], E_SYNTAX);
+    CHECK(!C_CMD[1] || !C_CMD[2] || !C_CMD[3], E_SYNTAX);
+    CHECK(strlen(C_CMD[1]) > 32 || strlen(C_CMD[3]) > 512, E_SYNTAX);
     CHECK(get_thread_name(C_TEAM, C_CHANNEL, C_CMD[1]), E_EXIST);
     add_thread(i, C_CMD[1], C_CMD[3]);
     thread = get_thread_name(C_TEAM, C_CHANNEL, C_CMD[1]);
@@ -21,16 +22,14 @@ void list_thread(int i)
 {
     thread_t *thread = C_TEAM->threads;
 
-    while (thread) {
+    while (C_CONNECTED && thread) {
         if (!strcmp(thread->channel_uuid, C_CHANNEL->uuid)) {
             SEND(i, M_THREAD_L, thread->uuid, thread->author_uuid,
                 thread->title, thread->body, (int)thread->created_at);
             handle_client(i);
-            CHECK(!C_CMD[0] || strcmp(C_CMD[0], "200"), E_KO);
         }
         thread = thread->next;
     }
-    SEND(i, M_END);
 }
 
 void use_thread(int i)
@@ -48,4 +47,10 @@ void use_thread(int i)
     C_CHANNEL = channel;
     C_THREAD = thread;
     SEND(i, M_OK);
+}
+
+void info_thread(int i)
+{
+    SEND(i, M_THREAD_I, C_THREAD->uuid, C_THREAD->author_uuid, C_THREAD->title,
+        C_THREAD->body, (int)C_THREAD->created_at);
 }

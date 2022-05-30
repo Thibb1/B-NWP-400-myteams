@@ -185,15 +185,18 @@ void info_server(int);
 void create_team(int);
 void list_team(int);
 void use_team(int);
+void info_team(int);
 void use_nothing(int);
 
 void create_channel(int);
 void list_channel(int);
 void use_channel(int);
+void info_channel(int);
 
 void create_thread(int);
 void list_thread(int);
 void use_thread(int);
+void info_thread(int);
 
 void create_reply(int);
 void list_reply(int);

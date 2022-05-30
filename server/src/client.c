@@ -30,6 +30,8 @@ void handle_client(int i)
     ssize_t read;
     char *buffer = NULL;
 
+    DESTROY_ARRAY(C_CMD);
+    C_CMD = NULL;
     if ((read = getline(&buffer, &len, C_STREAM)) == -1) {
         DESTROY(buffer);
         close_client(i);
