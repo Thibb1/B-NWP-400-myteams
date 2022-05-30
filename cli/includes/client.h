@@ -17,15 +17,15 @@ typedef struct commands_s {
 } commands_t;
 
 typedef struct client_s {
-    bool running;
     bool connected;
     char **cli_input;
     char *cli_buffer;
+    char **server_buffer;
+    char *reg;
     char *uuid;
     char *name;
-    char *ip;
-    char *port;
     int input;
+    FILE *stream;
     struct sockaddr_in server;
     commands_t *commands;
 } client_t;

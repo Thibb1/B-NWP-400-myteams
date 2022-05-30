@@ -50,7 +50,7 @@ void read_input(void);
 
 // text_utils.c
 
-void to_word_array(char *buff);
+void to_word_array(char *buff, char ***array);
 int len_array(char *buff);
 
 
@@ -63,7 +63,9 @@ void garbage_delete(void);
 // my_user.c
 
 void login_client(void);
-void logout_client(void);
-void users_client(void);
-void user_client(void);
+
+// handle_server.c
+void handle_server_code(int);
+void parse_uuid(void);
+void get_next(void);
 #endif

@@ -4,3 +4,6 @@
 myteams_server
 myteams_cli
 *.log
+vgcore.*
+cli/libs/
+server/libs/

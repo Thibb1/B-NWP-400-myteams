@@ -20,7 +20,9 @@ void garbage_delete(void)
 {
     disconnect_client();
     DESTROY(my_client()->cli_buffer);
-    DESTROY(my_client()->cli_input);
+    DESTROY_ARRAY(my_client()->cli_input);
+    DESTROY_ARRAY(my_client()->server_buffer);
+    DESTROY(my_client()->reg);
     DESTROY(my_client()->commands);
     DESTROY(my_client());
 }

@@ -34,9 +34,22 @@
     #define M_MUST_BE_LOGGED "You must be logged in to do this"
     #define M_SERVER "Server error"
 
+    #define E_CONNECTED "You are already connected"
+
+    #define QUOTE_STRING "\"([^\"]*)\""
+    #define REGEX_INPUT "^/[a-z]+( " QUOTE_STRING ")*\\s*$"
+
     #define DESTROY(v) \
 if (v) { \
     free(v); \
+}
+
+    #define DESTROY_ARRAY(v) \
+if (v) { \
+    for (int i = 0; (v)[i]; i++) { \
+        DESTROY((v)[i]); \
+    } \
+    DESTROY(v); \
 }
 
     #ifdef DEBUG
@@ -62,17 +75,32 @@ if (value) { \
     exit(84); \
 }
 
+    #define C_FD my_client()->input
+    #define C_STREAM my_client()->stream
     #define C_INPUT my_client()->cli_input
     #define C_COMMANDS my_client()->commands
     #define C_BUFFER my_client()->cli_buffer
+    #define C_SERVER my_client()->server_buffer
     #define C_CONNECTED my_client()->connected
     #define C_UUID my_client()->uuid
     #define C_NAME my_client()->name
+    #define C_REG my_client()->reg
 
     #define CHECK(value, error) \
 if (value) { \
     P_ERROR(error); \
     return; \
 }
+
+    #define CODE(in, code, fun, ...) \
+if (in == code) { \
+    fun(__VA_ARGS__); \
+}
+
+    #define SEND(f, ...) \
+do { \
+    fprintf(C_STREAM, f, ##__VA_ARGS__); \
+    fflush(C_STREAM); \
+} while (0);
 
 #endif /* !MACROS_H_ */

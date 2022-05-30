@@ -35,11 +35,11 @@ client_t *my_client(int idx)
 void garbage_delete(void)
 {
     DESTROY(SERVER->logs.users_uuids_buffer);
-    DESTROY(SERVER->logs.users_uuids);
+    free_list(SERVER->users);
     DESTROY(my_server());
     for (int i = 0; i < MAX_CLIENTS; i++) {
         DESTROY(C_PATH);
-        DESTROY(C_CMD);
+        DESTROY_ARRAY(C_CMD);
         DESTROY(C_NAME);
         DESTROY(C_UUID);
         DESTROY(my_client(i));

@@ -15,20 +15,27 @@ int len_array(char *buff)
 
     strcpy(cpy, buff);
     left = cpy;
-    while (strtok_r(left, " \r\n\t", &left) && ++len);
+    if (strtok_r(left, " \n", &left) && ++len)
+        while (strtok_r(left, "\"\n", &left) && ++len);
     DESTROY(cpy);
     return len;
 }
 
-void to_word_array(char *buff)
+void to_word_array(char *buff, char ***array)
 {
-    int len = len_array(buff);
+    char *cpy = strdup(buff);
+    char *left = cpy;
+    int len = len_array(cpy);
     char *ptr = NULL;
     int x = 0;
 
-    DESTROY(C_INPUT);
-    C_INPUT = calloc(len + 1, sizeof(char *));
-    while ((ptr = strtok_r(buff, " \r\n\t", &buff)))
-        C_INPUT[x++] = ptr;
-    C_INPUT[x] = NULL;
+    DESTROY_ARRAY(*array);
+    *array = calloc(len + 2, sizeof(char *));
+    if ((ptr = strtok_r(left, " \n", &left))) {
+        (*array)[x++] = strdup(ptr);
+        while ((ptr = strtok_r(left, "\"\n", &left)))
+            (*array)[x++] = strdup(ptr);
+    }
+    (*array)[x] = NULL;
+    DESTROY(cpy);
 }

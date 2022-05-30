@@ -15,20 +15,24 @@ void check_user_uuid(char *pseudo)
 
 void login_server(int i)
 {
-    CHECK(!C_CMD[1], M_SYNTAX);
+    CHECK(!C_CMD[1], E_SYNTAX);
+    CHECK(C_CONNECTED, E_KO);
     disconnect_client(i);
-    C_UUID = get_uuid(SERVER->logs.users_uuids, C_CMD[1]);
-    C_CNT = true;
+    C_UUID = get_uuid(C_CMD[1]);
+    C_CONNECTED = true;
     C_NAME = strdup(C_CMD[1]);
     check_user_uuid(C_CMD[1]);
-    dprintf(C_SOCKET, M_LOGIN);
-    dprintf(C_SOCKET, "%s" CR, C_UUID);
+    SEND(i, M_LOGIN, C_UUID);
     server_event_user_logged_in(C_UUID);
 }
 
 void disconnect_client(int i)
 {
-    C_CNT = false;
+    if (C_CONNECTED) {
+        get_user(C_UUID)->connected = false;
+        server_event_user_logged_out(C_UUID);
+    }
+    C_CONNECTED = false;
     DESTROY(C_NAME);
     DESTROY(C_UUID);
     C_UUID = NULL;
@@ -37,11 +41,7 @@ void disconnect_client(int i)
 
 void logout_server(int i)
 {
-    if (C_CNT) {
-        server_event_user_logged_out(C_UUID);
-        dprintf(C_SOCKET, M_LOGOUT);
-        disconnect_client(i);
-    } else {
-        dprintf(C_SOCKET, M_LOGIN);
-    }
+    CHECK(!C_CONNECTED, E_UNAUTHORIZED);
+    SEND(i, M_LOGOUT);
+    disconnect_client(i);
 }

@@ -35,9 +35,16 @@
 
 typedef struct server_logs_s {
     char *users_uuids_buffer;
-    char **users_uuids;
 } server_logs_t;
 
+
+// linked list of users
+typedef struct user_s {
+    char *uuid;
+    char *name;
+    bool connected;
+    struct user_s *next;
+} user_t;
 
 typedef struct server_s {
     long port;
@@ -50,6 +57,7 @@ typedef struct server_s {
     int activity;
     int new_socket;
     bool running;
+    user_t *users;
     server_logs_t logs;
 } server_t;
 
@@ -57,8 +65,10 @@ typedef struct client_s {
     char *path;
     char *uuid;
     char *name;
+    char *out;
     bool connected;
     int socket;
+    FILE *stream;
     fd_set read_fds;
     int activity;
     char **cmd;
@@ -79,12 +89,10 @@ void close_client(int);
 void disconnect_client(int);
 
 void handle_command(int);
-char *commands_with_args(char *, int);
 
 void to_word_array(int, char *);
 int len_array(char *);
 char *replace(char *, char, char);
-uint16_t get_port(int);
 
 void garbage_delete(void);
 server_t *my_server(void);
@@ -94,14 +102,19 @@ client_t *my_client(int);
 void close_socket(int);
 void open_socket(int);
 
-
 void get_file(char *path, char **dest);
 void build_logs(void);
 char *create_uuid(void);
-char *get_uuid(char **array, char *name);
+char *get_uuid(char *name);
 
 void login_server(int);
 void logout_server(int);
 void quit_client(int);
 
+void users_server(int);
+void user_server(int);
+
+void free_list(user_t *list);
+void add_user(char *uuid, char *name);
+user_t *get_user(char *uuid);
 #endif

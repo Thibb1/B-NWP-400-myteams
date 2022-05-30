@@ -13,27 +13,30 @@ void get_file(char *path, char **dest)
     int length = 0;
 
     DESTROY(*dest);
-    ASSERT(NULL == ptr, "file users_uuids.log can't be opened");
-    fseek(ptr, 0L, SEEK_END);
+    ASSERT(NULL == ptr, "file %s can't be opened", path);
+    fseek(ptr, 0, SEEK_END);
     length = ftell(ptr);
+    fseek(ptr, 0, SEEK_SET);
     *dest = calloc(length + 1, sizeof(char));
-    fseek(ptr, 0L, SEEK_SET);
     fread(*dest, sizeof(char), length, ptr);
     fclose(ptr);
 }
 
-void logs_to_array(char *str, char ***array)
+void build_users(char *str)
 {
-    int len = len_array(str);
     char *ptr = NULL;
-    int x = 0;
+    char *uuid = NULL;
+    char *name = NULL;
 
-    if (*array)
-        free(*array);
-    (*array) = calloc(len + 1, sizeof(char *));
-    while ((ptr = strtok_r(str, " \n\r", &str)))
-        (*array)[x++] = ptr;
-    (*array)[x] = NULL;
+    while ((ptr = strtok_r(str, "\n", &str))) {
+        if (strlen(ptr) > 0) {
+            LOG("%s", ptr);
+            uuid = strtok_r(ptr, " ", &ptr);
+            name = strtok_r(ptr, " ", &ptr);
+            add_user(uuid, name);
+            server_event_user_loaded(uuid, name);
+        }
+    }
 }
 
 char *create_uuid(void)
@@ -44,26 +47,30 @@ char *create_uuid(void)
     ASSERT(NULL == uuid, "uuid can't be created\n");
     uuid_generate_random(uuid_t);
     uuid_unparse(uuid_t, uuid);
-    return (uuid);
+    return uuid;
 }
 
-char *get_uuid(char **array, char *name)
+char *get_uuid(char *name)
 {
     char *uuid = NULL;
+    user_t *user = SERVER->users;
 
-    for (int pos = 1; array[pos - 1] != NULL; pos += 2)
-        if (strcmp(array[pos], name) == 0) {
-            LOG("uuid found : %s", array[pos]);
-            return array[pos];
+    while (user) {
+        if (!strcmp(user->name, name)) {
+            user->connected = true;
+            return strdup(user->uuid);
         }
-    LOG("uuid not found, need to create new uuid");
+        user = user->next;
+    }
     uuid = create_uuid();
+    add_user(uuid, name);
     server_event_user_created(uuid, name);
+    APPEND("logs/users_uuids.log", "%s %s\n", uuid, name);
     return uuid;
 }
 
 void build_logs(void)
 {
     get_file("logs/users_uuids.log", &SERVER->logs.users_uuids_buffer);
-    logs_to_array(SERVER->logs.users_uuids_buffer, &SERVER->logs.users_uuids);
+    build_users(SERVER->logs.users_uuids_buffer);
 }

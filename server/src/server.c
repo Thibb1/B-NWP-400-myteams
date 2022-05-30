@@ -17,6 +17,7 @@ void close_server(void)
 
 void create_server(void)
 {
+    S_USERS = NULL;
     S_SOCKET = socket(AF_INET, SOCK_STREAM, 0);
     ASSERT(S_SOCKET == -1, "socket");
     S_OPT = true;
@@ -42,8 +43,12 @@ void run_server(void)
         routine_server();
         if (FD_ISSET(S_SOCKET, &SERVER->read_fds))
             connect_client();
-        for (int i = 0; i < MAX_CLIENTS; i++)
-            handle_client(i);
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            if (FD_ISSET(C_SOCKET, &SERVER->read_fds)) {
+                handle_client(i);
+                handle_command(i);
+            }
+        }
     }
 }
 

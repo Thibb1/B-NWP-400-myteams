@@ -10,31 +10,32 @@
 void close_client(int i)
 {
     disconnect_client(i);
-    if (!C_SOCKET)
-        return;
-    dprintf(C_SOCKET, M_LOGOUT);
-    FCLOSE(C_SOCKET);
-    LOG("Connection closed");
-    C_SOCKET = 0;
-    DESTROY(C_CMD);
+    DESTROY_ARRAY(C_CMD);
     DESTROY(C_PATH);
     C_CMD = NULL;
     C_PATH = NULL;
+    if (!C_SOCKET)
+        return;
+    SEND(i, M_CLOSED);
+    fclose(C_STREAM);
+    close(C_SOCKET);
+    C_SOCKET = 0;
+    C_STREAM = NULL;
+    LOG("Connection closed");
 }
 
 void handle_client(int i)
 {
-    ssize_t read_ret;
-    char buffer[1024];
+    size_t len = 0;
+    ssize_t read;
+    char *buffer = NULL;
 
-    if (FD_ISSET(C_SOCKET, &SERVER->read_fds)) {
-        if ((read_ret = read(C_SOCKET, buffer, 1024)) == 0) {
-            close_client(i);
-        } else {
-            buffer[read_ret] = 0;
-            to_word_array(i, buffer);
-            handle_command(i);
-        }
+    if ((read = getline(&buffer, &len, C_STREAM)) == -1) {
+        DESTROY(buffer);
+        close_client(i);
+    } else {
+        to_word_array(i, buffer);
+        DESTROY(buffer);
     }
 }
 
@@ -46,7 +47,8 @@ void connect_client(void)
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (C_SOCKET == 0) {
             C_SOCKET = SERVER->new_socket;
-            C_CNT = false;
+            C_STREAM = fdopen(C_SOCKET, "r+");
+            C_CONNECTED = false;
             return;
         }
     }

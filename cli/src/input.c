@@ -41,16 +41,18 @@ void help_client(void)
 
 void get_input(void)
 {
-    ssize_t read_ret;
-    char buffer[1024];
+    size_t len = 0;
+    ssize_t read;
 
     printf("> ");
     fflush(stdout);
-    if ((read_ret = read(STDIN_FILENO, buffer, 1024)) == 0) {
+    DESTROY(C_BUFFER);
+    C_BUFFER = NULL;
+    if ((read = getline(&C_BUFFER, &len, stdin)) == -1) {
         close_client();
     } else {
-        buffer[read_ret] = 0;
-        to_word_array(buffer);
+        CHECK(!regex_match(C_BUFFER, REGEX_INPUT), M_SYNTAX);
+        to_word_array(C_BUFFER, &C_INPUT);
         handle_command();
     }
 }
@@ -58,43 +60,32 @@ void get_input(void)
 void send_input(void)
 {
     int len = 0;
+
     while (C_INPUT[len++]);
-    switch (--len) {
-        case 2:
-            dprintf(my_client()->input, "%s %s\n", C_INPUT[0], C_INPUT[1]);
-            break;
-        case 3:
-            dprintf(my_client()->input, "%s %s %s\n", C_INPUT[0], C_INPUT[1],
-                C_INPUT[2]);
-            break;
-        default:
-            dprintf(my_client()->input, "%s\n", C_INPUT[0]);
-            break;
-    }
+    CODE(len, 2, fprintf, C_STREAM, "%s\n", C_INPUT[0]);
+    CODE(len, 3, fprintf, C_STREAM, "%s \"%s\"\n", C_INPUT[0], C_INPUT[1]);
+    CODE(len, 4, fprintf, C_STREAM, "%s \"%s\" \"%s\"\n", C_INPUT[0],
+        C_INPUT[1], C_INPUT[2]);
+    fflush(C_STREAM);
 }
 
 void read_input(void)
 {
-    ssize_t read_ret;
-    char *code = NULL;
+    size_t len = 0;
+    ssize_t read;
 
-    if ((read_ret = read(my_client()->input, C_BUFFER, 1024)) == 0) {
+    DESTROY(C_BUFFER);
+    C_BUFFER = NULL;
+    if ((read = getline(&C_BUFFER, &len, C_STREAM)) == -1) {
         close_client();
     } else {
-        C_BUFFER[read_ret] = 0;
         if (!regex_match(C_BUFFER, "[0-9]{3} .*$"))
             return;
-        code = regex_get_match(C_BUFFER, "^([0-9]{3}) .*$");
-        LOG("%s", code);
-        DESTROY(code);
-        if (regex_match(C_BUFFER, "^251 .*$")) {
-            close_client();
-        } else if (regex_match(C_BUFFER, "^2[0-9]{2}.*$")) {
-            LOG("%s", C_BUFFER);
-        }
-        if (regex_match(C_BUFFER, "^3[0-9]{2}.*$")) {
-            client_error_unauthorized();
-            P_ERROR("%s", C_BUFFER);
-        }
+        DESTROY(C_REG);
+        C_REG = regex_get_match(C_BUFFER, "^([0-9]{3}) .*$");
+        CODE(regex_match(C_BUFFER, "^2.*$"), true, LOG, "%s", C_BUFFER);
+        CODE(regex_match(C_BUFFER, "^4.*$"), true, P_ERROR, "%s", C_BUFFER);
+        to_word_array(C_BUFFER, &C_SERVER);
+        handle_server_code(atoi(C_REG));
     }
 }

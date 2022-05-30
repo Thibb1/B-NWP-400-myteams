@@ -10,11 +10,13 @@ SOURCE	=	src/main.c					\
 			src/metadata.c				\
 			src/server.c				\
 			src/client.c				\
+			src/linked_list.c			\
 			src/command.c				\
 			src/string_util.c			\
-			src/logs.c			\
+			src/logs.c					\
 			src/commands/my_quit.c		\
-			src/commands/my_client.c
+			src/commands/my_client.c	\
+			src/commands/users.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams
 LDFLAGS	=	-L../libs/myteams '-Wl,-rpath=$$ORIGIN/libs/myteams' -lmyteams \

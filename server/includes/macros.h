@@ -22,23 +22,33 @@
     #define CR "\r\n"
 
     #define M_OK "200 " BOLD GREEN "OK" RESET CR
-    #define M_LOGIN "201 " BOLD GREEN "User logged in" RESET CR
-    #define M_SENT "202 " BOLD GREEN "Message sent" RESET CR
-    #define M_SUBSCRIBED "211 " BOLD GREEN "Subscribed" RESET CR
-    #define M_UNSUBSCRIBED "219 " BOLD GREEN "Unsubscribed" RESET CR
-    #define M_LOGOUT "250 " BOLD RED "User logged out" RESET CR
-    #define M_CLOSED "251 " BOLD RED "Server connection closed" RESET CR
-    #define M_DATA "290 " BOLD GREEN "Data sent" RESET CR
+    #define M_LOGIN "211 %s" BOLD GREEN " logged in" RESET CR
+    #define M_LOGOUT "212 " BOLD RED "User logged out" RESET CR
+    #define M_USERS "214 \"%s\" \"%d\" \"%s\"" CR
+    #define M_USER "215 \"%s\" \"%d\" \"%s\"" CR
+    #define M_CLOSED "250 " BOLD RED "Connection closed" RESET CR
+    #define M_END "253 " BOLD GREEN "End of transmission" RESET CR
 
-    #define M_KO "300 " BOLD RED "KO" RESET CR
-    #define M_NOT_LOGGED "301 " BOLD RED "Unauthenticated" RESET CR
-    #define M_NOT_FOUND "302 " BOLD RED "Unknown command" RESET CR
-    #define M_SYNTAX "303 " BOLD RED "Syntax error" RESET CR
-    #define M_IMPLEMENTED "304 " BOLD RED "Command not implemented" RESET CR
+    #define E_KO "400 " BOLD RED "KO" RESET CR
+    #define E_SYNTAX "401 " BOLD RED "Syntax error" RESET CR
+    #define E_UNAUTHORIZED "410 " BOLD RED "Unauthorized" RESET CR
+    #define E_USER "413 " BOLD RED "Unknown user" RESET CR
+    #define E_CHANNEL "423 " BOLD RED "Unknown channel" RESET CR
+    #define E_TEAM "433 " BOLD RED "Unknown team" RESET CR
+    #define E_THREAD "443 " BOLD RED "Unknown thread" RESET CR
+    #define E_EXIST "450 " BOLD RED "Already exists" RESET CR
 
     #define DESTROY(v) \
 if (v) { \
     free(v); \
+}
+
+    #define DESTROY_ARRAY(v) \
+if (v) { \
+    for (int g = 0; v[g]; g++) { \
+        DESTROY(v[g]); \
+    } \
+    DESTROY(v); \
 }
 
     #define FCLOSE(f) \
@@ -46,7 +56,7 @@ if (f) { \
     close(f); \
 }
 
-    #ifndef DEBUG
+    #ifdef DEBUG
         #define M_ERROR BOLD RED "[%s:%d] " RESET BOLD "%s " RESET
         #define P_ERROR(f, ...) \
     fprintf(stdout, M_ERROR, __FILE__, __LINE__, __FUNCTION__); \
@@ -65,17 +75,21 @@ if (f) { \
 
     #define CLIENT my_client(i)
     #define C_SOCKET CLIENT->socket
+    #define C_STREAM CLIENT->stream
     #define C_PATH CLIENT->path
     #define C_CMD CLIENT->cmd
     #define C_NAME CLIENT->name
-    #define C_CNT CLIENT->connected
+    #define C_CONNECTED CLIENT->connected
+    #define C_OUT CLIENT->out
     #define C_UUID CLIENT->uuid
+
     #define SERVER my_server()
     #define S_SOCKET SERVER->socket
     #define S_ADDR SERVER->addr
     #define S_ADLEN SERVER->addr_len
     #define S_OPT SERVER->opt
     #define S_PORT S_ADDR.sin_port
+    #define S_USERS SERVER->users
 
     #define ASSERT(value, ...) \
 if (value) { \
@@ -86,8 +100,23 @@ if (value) { \
 
     #define CHECK(value, error) \
 if (value) { \
-    dprintf(C_SOCKET, error); \
+    SEND(i, error); \
     return; \
 }
+
+    #define APPEND(path, f, ...) \
+do { \
+    FILE *file = fopen(path, "a+"); \
+    if (file) { \
+        fprintf(file, f, ##__VA_ARGS__); \
+        fclose(file); \
+    } \
+} while (0);
+
+    #define SEND(i, f, ...) \
+do { \
+    fprintf(C_STREAM, f, ##__VA_ARGS__); \
+    fflush(C_STREAM); \
+} while (0);
 
 #endif /* !MACROS_H_ */

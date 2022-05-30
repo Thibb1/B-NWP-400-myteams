@@ -15,7 +15,8 @@ int len_array(char *buff)
 
     strcpy(cpy, buff);
     left = cpy;
-    while (strtok_r(left, DELIM, &left) && ++len);
+    if (strtok_r(left, " \n", &left) && ++len)
+        while (strtok_r(left, "\"\n", &left) && ++len);
     DESTROY(cpy);
     return len;
 }
@@ -26,10 +27,14 @@ void to_word_array(int i, char *buff)
     char *ptr = NULL;
     int x = 0;
 
-    DESTROY(C_CMD);
+    DESTROY_ARRAY(C_CMD);
     C_CMD = calloc(len + 1, sizeof(char *));
-    while ((ptr = strtok_r(buff, DELIM, &buff)))
-        C_CMD[x++] = ptr;
+        if ((ptr = strtok_r(buff, " \n", &buff))) {
+        C_CMD[x++] = strdup(ptr);
+        while ((ptr = strtok_r(buff, "\"\n", &buff)))
+            C_CMD[x++] = strdup(ptr);
+    }
+    C_CMD[x] = NULL;
 }
 
 char *replace(char *str, char from, char to)
@@ -39,14 +44,4 @@ char *replace(char *str, char from, char to)
     while ((ptr = strchr(ptr, from)) != NULL)
         *ptr++ = to;
     return str;
-}
-
-uint16_t get_port(int socket)
-{
-    struct sockaddr_in sin;
-    socklen_t len = sizeof(sin);
-
-    if (getsockname(socket, (struct sockaddr *)&sin, &len) != -1)
-        return ntohs(sin.sin_port);
-    return 0;
 }

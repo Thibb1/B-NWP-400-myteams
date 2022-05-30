@@ -22,6 +22,7 @@ int main(int ac, char *av[])
     parse_av(av);
     create_server();
     signal(SIGINT, int_handler);
+    signal(SIGPIPE, SIG_IGN);
     run_server();
     close_server();
     garbage_delete();

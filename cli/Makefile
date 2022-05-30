@@ -7,8 +7,8 @@
 
 OUT 	=	myteams_cli
 SOURCE	=	src/struct_init/commands.c		\
-			src/client_command/my_user.c	\
-			src/funcs.c						\
+			src/commands/my_user.c			\
+			src/commands/handle_server.c 	\
 			src/input.c						\
 			src/client.c					\
 			src/metadata.c					\
