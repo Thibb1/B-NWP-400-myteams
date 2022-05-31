@@ -117,6 +117,7 @@ void int_handler(int);
 
 void create_server(void);
 void close_server(void);
+void io_server(void);
 void run_server(void);
 void routine_server(void);
 
