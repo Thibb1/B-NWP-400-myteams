@@ -27,8 +27,7 @@ SOURCE	=	src/main.c					\
 			src/commands/users.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams
-LDFLAGS	=	-L../libs/myteams '-Wl,-rpath=$$ORIGIN/libs/myteams' -lmyteams \
-	-luuid
+LDFLAGS	=	-L../libs/myteams -luuid -lmyteams
 OBJS	=	$(SOURCE:.c=.o)
 
 
