@@ -40,10 +40,17 @@ typedef struct server_logs_s {
 } server_logs_t;
 
 
+// linked list of subscribtions
+typedef struct  subscription_s {
+    char *uuid;
+    struct subscription_s *next;
+} subscription_t;
+
 // linked list of users
 typedef struct user_s {
     char *uuid;
     char *name;
+    subscription_t *subscriptions;
     bool connected;
     struct user_s *next;
 } user_t;
@@ -215,4 +222,13 @@ void info_thread(int);
 
 void create_reply(int);
 void list_replies(int);
+
+void subscribe_server(int);
+void subscribed_server(int);
+void unsubscribe_server(int);
+
+void free_subscriptions(subscription_t *list);
+void add_subscription(int, char *uuid);
+bool is_subscribed(int, char *channel_uuid);
+void remove_subscription(int, char *uuid);
 #endif

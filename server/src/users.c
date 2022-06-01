@@ -31,6 +31,7 @@ void free_users(user_t *list)
         tmp2 = tmp->next;
         DESTROY(tmp->uuid);
         DESTROY(tmp->name);
+        free_subscriptions(tmp->subscriptions);
         DESTROY(tmp);
         tmp = tmp2;
     }
@@ -50,7 +51,7 @@ user_t *get_user(char *uuid)
 {
     user_t *user = SERVER->users;
 
-    while (user) {
+    while (user != NULL) {
         if (!strcmp(user->uuid, uuid))
             return user;
         user = user->next;

@@ -9,11 +9,17 @@
 
 void create_channel(int i)
 {
+    channel_t *channel = NULL;
+    team_t *team = C_TEAM;
+
     CHECK(!C_CMD[1] || !C_CMD[2] || !C_CMD[3], E_SYNTAX);
     CHECK(strlen(C_CMD[1]) > 32 || strlen(C_CMD[3]) > 255, E_SYNTAX);
     CHECK(get_channel_name(C_TEAM, C_CMD[1]), E_EXIST);
     add_channel(C_TEAM->uuid, C_CMD[1], C_CMD[3]);
-    SEND(i, M_CHANNEL_C, get_channel_name(C_TEAM, C_CMD[1])->uuid);
+    channel = get_channel_name(team, C_CMD[1]);
+    SEND(i, M_CHANNEL_C, channel->uuid);
+    SEND_SUBSCRIBERS(M_CHANNEL_B, team, team->uuid, channel->uuid,
+        channel->description);
 }
 
 void list_channel(int i)

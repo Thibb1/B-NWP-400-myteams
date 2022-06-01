@@ -10,12 +10,15 @@
 void create_thread(int i)
 {
     thread_t *thread = NULL;
+    team_t *team = C_TEAM;
     CHECK(!C_CMD[1] || !C_CMD[2] || !C_CMD[3], E_SYNTAX);
     CHECK(strlen(C_CMD[1]) > 32 || strlen(C_CMD[3]) > 512, E_SYNTAX);
     CHECK(get_thread_name(C_TEAM, C_CHANNEL, C_CMD[1]), E_EXIST);
     add_thread(i, C_CMD[1], C_CMD[3]);
     thread = get_thread_name(C_TEAM, C_CHANNEL, C_CMD[1]);
     SEND(i, M_THREAD_C, thread->uuid, (int)thread->created_at);
+    SEND_SUBSCRIBERS(M_THREAD_B, team, thread->uuid, thread->author_uuid,
+        thread->title, thread->body, (int)thread->created_at);
 }
 
 void list_thread(int i)

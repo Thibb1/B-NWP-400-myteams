@@ -9,11 +9,14 @@
 
 void create_team(int i)
 {
+    team_t *team = NULL;
     CHECK(!C_CMD[1] || !C_CMD[2] || !C_CMD[3], E_SYNTAX);
     CHECK(strlen(C_CMD[1]) > 32 || strlen(C_CMD[3]) > 255, E_SYNTAX);
     CHECK(get_team_name(C_CMD[1]), E_EXIST);
     add_team(C_UUID, C_CMD[1], C_CMD[3]);
-    SEND(i, M_TEAM_C, get_team_name(C_CMD[1])->uuid);
+    team = get_team_name(C_CMD[1]);
+    SEND(i, M_TEAM_C, team->uuid);
+    SEND_ALL(M_TEAM_B, team->uuid, team->name, team->description);
 }
 
 void list_team(int i)

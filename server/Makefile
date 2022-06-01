@@ -16,6 +16,7 @@ SOURCE	=	src/main.c					\
 			src/threads.c				\
 			src/command.c				\
 			src/string_util.c			\
+			src/subscription.c			\
 			src/logs.c					\
 			src/uuid.c					\
 			src/replies.c				\
@@ -26,6 +27,7 @@ SOURCE	=	src/main.c					\
 			src/commands/channels.c		\
 			src/commands/call_command.c \
 			src/commands/replies.c		\
+			src/commands/subscribe.c	\
 			src/commands/users.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams

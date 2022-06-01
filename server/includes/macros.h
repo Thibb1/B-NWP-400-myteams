@@ -29,14 +29,21 @@
     #define M_TEAM_C "231 %s" BOLD GREEN " team created" RESET CR
     #define M_TEAM_L "234 \"%s\" \"%s\" \"%s\"" CR
     #define M_TEAM_I "235 \"%s\" \"%s\" \"%s\"" CR
+    #define M_TEAM_B "236 \"%s\" \"%s\" \"%s\"" CR
     #define M_THREAD_C "241 %s \"%d\"" BOLD GREEN " thread created" RESET CR
     #define M_THREAD_L "244 \"%s\" \"%s\" \"%s\" \"%s\" \"%d\"" CR
     #define M_THREAD_I "245 \"%s\" \"%s\" \"%s\" \"%s\" \"%d\"" CR
+    #define M_THREAD_B "246 \"%s\" \"%s\" \"%s\" \"%s\" \"%d\"" CR
     #define M_CHANNEL_C "261 %s" BOLD GREEN " channel created" RESET CR
     #define M_CHANNEL_L "264 \"%s\" \"%s\" \"%s\"" CR
     #define M_CHANNEL_I "265 \"%s\" \"%s\" \"%s\"" CR
+    #define M_CHANNEL_B "266 \"%s\" \"%s\" \"%s\"" CR
     #define M_REPLY_C "271 %s \"%d\"" BOLD GREEN " reply created" RESET CR
     #define M_REPLY_L "274 \"%s\" \"%s\" \"%d\" \"%s\"" CR
+    #define M_REPLY_B "276 \"%s\" \"%s\" \"%s\" \"%s\"" CR
+    #define M_SUBSCRI_C "281 " BOLD GREEN "Subscribed" RESET CR
+    #define M_UNSUBSCRI_C "282 " BOLD GREEN "Unsubscribed" RESET CR
+    #define M_SUBSCRI_L "284 %s" CR
     #define M_CLOSED "250 " BOLD RED "Connection closed" RESET CR
 
     #define E_KO "400 " BOLD RED "KO" RESET CR
@@ -132,9 +139,23 @@ do { \
     } \
 } while (0);
 
-    #define SEND(i, f, ...) \
+    #define SEND(s, f, ...) \
 do { \
-    dprintf(C_SOCKET, f, ##__VA_ARGS__); \
+    dprintf(my_client(s)->socket, f, ##__VA_ARGS__); \
+} while (0);
+
+    #define SEND_ALL(f, ...) \
+do { \
+    for (int y = 0; y < MAX_CLIENTS; y++) \
+        if (my_client(y)->socket && my_client(y)->connected) \
+            SEND(y, f, ##__VA_ARGS__); \
+} while (0);
+
+    #define SEND_SUBSCRIBERS(f, team, ...) \
+do { \
+    for (int y = 0; y < MAX_CLIENTS; y++) \
+        if (my_client(y)->socket && is_subscribed(y, team->uuid)) \
+            SEND(y, f, ##__VA_ARGS__); \
 } while (0);
 
     #define FOLDER(f, ...) \
