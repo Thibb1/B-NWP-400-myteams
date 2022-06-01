@@ -10,6 +10,8 @@
 void list_server(int i)
 {
     CHECK(!C_CONNECTED, E_UNAUTHORIZED);
+    printf("debug\n");
+    STATE(C_THREAD != NULL, list_replies, i);
     STATE(C_CHANNEL != NULL, list_thread, i);
     STATE(C_TEAM != NULL, list_channel, i);
     list_team(i);
@@ -19,6 +21,7 @@ void create_state_server(int i)
 {
     CHECK(!C_CONNECTED, E_UNAUTHORIZED);
     CHECK(!C_CMD[1], E_SYNTAX);
+    STATE(C_THREAD != NULL, create_reply, i);
     STATE(C_CHANNEL != NULL, create_thread, i);
     STATE(C_TEAM != NULL, create_channel, i);
     create_team(i);

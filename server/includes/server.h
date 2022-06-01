@@ -56,6 +56,14 @@ typedef struct channel_s {
     struct channel_s *next;
 } channel_t;
 
+// linked list of replies
+typedef struct reply_s {
+    char *body;
+    time_t created_at;
+    char *author_uuid;
+    struct reply_s *next;
+} reply_t;
+
 // linked list of threads
 typedef struct thread_s {
     char *uuid;
@@ -64,6 +72,7 @@ typedef struct thread_s {
     time_t created_at;
     char *channel_uuid;
     char *author_uuid;
+    reply_t *replies;
     struct thread_s *next;
 } thread_t;
 
@@ -117,7 +126,6 @@ void int_handler(int);
 
 void create_server(void);
 void close_server(void);
-void io_server(void);
 void run_server(void);
 void routine_server(void);
 
@@ -200,5 +208,5 @@ void use_thread(int);
 void info_thread(int);
 
 void create_reply(int);
-void list_reply(int);
+void list_replies(int);
 #endif

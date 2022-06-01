@@ -35,16 +35,6 @@ void create_server(void)
         C_SOCKET = 0;
 }
 
-void io_server(void)
-{
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        if (FD_ISSET(C_SOCKET, &SERVER->read_fds)) {
-            handle_client(i);
-            handle_command(i);
-        }
-    }
-}
-
 void run_server(void)
 {
     my_server()->running = true;
@@ -53,7 +43,12 @@ void run_server(void)
         routine_server();
         if (FD_ISSET(S_SOCKET, &SERVER->read_fds))
             connect_client();
-        io_server();
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            if (FD_ISSET(C_SOCKET, &SERVER->read_fds)) {
+                handle_client(i);
+                handle_command(i);
+            }
+        }
     }
 }
 

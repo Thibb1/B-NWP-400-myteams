@@ -35,6 +35,8 @@
     #define M_CHANNEL_C "261 %s" BOLD GREEN " channel created" RESET CR
     #define M_CHANNEL_L "264 \"%s\" \"%s\" \"%s\"" CR
     #define M_CHANNEL_I "265 \"%s\" \"%s\" \"%s\"" CR
+    #define M_REPLY_C "271 %s" BOLD GREEN " reply created" RESET CR
+    #define M_REPLY_L "274 \"%s\" \"%d\" \"%s\"" CR
     #define M_CLOSED "250 " BOLD RED "Connection closed" RESET CR
 
     #define E_KO "400 " BOLD RED "KO" RESET CR
@@ -42,7 +44,7 @@
     #define E_UNAUTHORIZED "410 " BOLD RED "Unauthorized" RESET CR
     #define E_USER "413 " BOLD RED "Unknown user" RESET CR
     #define E_CHANNEL "423 " BOLD RED "Unknown channel" RESET CR
-    #define E_TEAM "433 " BOLD RED "Unknown team" RESET CR
+    #define E_TEAM "433 F" BOLD RED "Unknown team" RESET CR
     #define E_THREAD "443 " BOLD RED "Unknown thread" RESET CR
     #define E_EXIST "450 " BOLD RED "Already exists" RESET CR
 

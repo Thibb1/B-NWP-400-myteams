@@ -58,7 +58,9 @@ void send_input(void)
     CODE(len, 3, fprintf, C_STREAM, "%s \"%s\"\n", C_INPUT[0], C_INPUT[1]);
     CODE(len, 5, fprintf, C_STREAM, "%s \"%s\" \"%s\"\n", C_INPUT[0],
         C_INPUT[1], C_INPUT[3]);
-    if (len != 2 && len != 3 && len != 5) {
+    CODE(len, 7, fprintf, C_STREAM, "%s \"%s\" \"%s\" \"%s\"\n", C_INPUT[0],
+        C_INPUT[1], C_INPUT[3], C_INPUT[5]);
+    if (len != 2 && len != 3 && len != 5 && len != 7) {
         fprintf(C_STREAM, "Error\n");
         P_ERROR(M_SYNTAX);
     }

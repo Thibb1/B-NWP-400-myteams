@@ -18,6 +18,7 @@ SOURCE	=	src/main.c					\
 			src/string_util.c			\
 			src/logs.c					\
 			src/uuid.c					\
+			src/replies.c				\
 			src/commands/my_quit.c		\
 			src/commands/my_client.c	\
 			src/commands/teams.c		\
