@@ -45,7 +45,6 @@ void connect_client(void)
 {
     ASSERT((SERVER->new_socket = accept(S_SOCKET, (struct sockaddr *)&S_ADDR,
         &S_ADLEN)) < 0, "accept error");
-    LOG("New client connected");
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (C_SOCKET == 0) {
             C_SOCKET = SERVER->new_socket;

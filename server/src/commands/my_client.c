@@ -7,12 +7,6 @@
 
 #include "server.h"
 
-void check_user_uuid(char *pseudo)
-{
-    LOG("Connexion request for ");
-    LOG("%s", pseudo);
-}
-
 void login_server(int i)
 {
     CHECK(!C_CMD[1], E_SYNTAX);
@@ -21,7 +15,6 @@ void login_server(int i)
     C_UUID = get_user_uuid(C_CMD[1]);
     C_CONNECTED = true;
     C_NAME = strdup(C_CMD[1]);
-    check_user_uuid(C_CMD[1]);
     SEND(i, M_LOGIN, C_UUID);
     server_event_user_logged_in(C_UUID);
 }

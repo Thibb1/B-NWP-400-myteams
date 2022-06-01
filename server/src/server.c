@@ -48,7 +48,6 @@ void io_server(void)
 void run_server(void)
 {
     my_server()->running = true;
-    LOG("Server listening");
     while (my_server()->running) {
         routine_server();
         if (FD_ISSET(S_SOCKET, &SERVER->read_fds))

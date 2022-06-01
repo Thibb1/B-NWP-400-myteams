@@ -37,10 +37,8 @@ void create_client_connection(char **av)
     my_client()->server.sin_family = AF_INET;
     my_client()->server.sin_port = htons(atoi(av[2]));
     my_client()->server.sin_addr.s_addr = inet_addr(av[1]);
-    LOG("Client created, connecting ...");
     ASSERT(connect(my_client()->input, (struct sockaddr *)&my_client()->server,
         sizeof(my_client()->server)) == -1, M_CONNECT);
-    LOG("Connected, please login using /login <username>");
 }
 
 void create_client(void)
