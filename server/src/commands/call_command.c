@@ -30,7 +30,7 @@ void use_server(int i)
 {
     int len = 0;
     CHECK(!C_CONNECTED, E_UNAUTHORIZED);
-    while(C_CMD[len++]);
+    while (C_CMD[len++]);
     STATE(len == 7, use_thread, i);
     STATE(len == 5, use_channel, i);
     STATE(len == 3, use_team, i);

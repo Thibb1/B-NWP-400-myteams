@@ -17,7 +17,7 @@ int add_reply(int i, char *body)
     reply->created_at = time(NULL);
     reply->next = C_THREAD->replies;
     C_THREAD->replies = reply;
-    server_event_reply_created(C_TEAM->uuid, C_UUID, body);
+    server_event_reply_created(C_THREAD->uuid, C_UUID, body);
     snprintf(path, 1024, "logs/teams/%s/%s.log", C_TEAM->uuid, C_THREAD->uuid);
     APPEND(path, "%s %d %s\n", C_UUID, (int)reply->created_at, body);
     return ((int)reply->created_at);
