@@ -60,12 +60,12 @@ void run_client(void)
     int ret;
     FD_ZERO(&my_client()->read_fds);
     FD_SET(C_FD, &my_client()->read_fds);
-    FD_SET(1, &my_client()->read_fds);
+    FD_SET(fileno(stdin), &my_client()->read_fds);
     ret = select(C_FD + 1, &my_client()->read_fds, NULL, NULL, NULL);
     ASSERT(ret == -1 && errno != EINTR, M_SELECT);
     if (FD_ISSET(C_FD, &my_client()->read_fds)) {
         read_input();
-    } else if (FD_ISSET(1, &my_client()->read_fds)) {
+    } else if (FD_ISSET(fileno(stdin), &my_client()->read_fds)) {
         get_input();
     }
 }
