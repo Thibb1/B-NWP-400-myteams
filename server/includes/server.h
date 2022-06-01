@@ -41,7 +41,7 @@ typedef struct server_logs_s {
 
 
 // linked list of subscribtions
-typedef struct  subscription_s {
+typedef struct subscription_s {
     char *uuid;
     struct subscription_s *next;
 } subscription_t;

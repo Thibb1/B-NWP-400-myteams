@@ -44,6 +44,14 @@ bool is_subscribed(int i, char *channel_uuid)
     return false;
 }
 
+void conditionnal(subscription_t *s, subscription_t *p, user_t *u)
+{
+    if (p)
+        p->next = s->next;
+    else
+        u->subscriptions = s->next;
+}
+
 void remove_subscription(int i, char *uuid)
 {
     user_t *user = get_user(C_UUID);
@@ -51,10 +59,7 @@ void remove_subscription(int i, char *uuid)
     subscription_t *prev = NULL;
     while (subscription) {
         if (!strcmp(subscription->uuid, uuid)) {
-            if (prev)
-                prev->next = subscription->next;
-            else
-                user->subscriptions = subscription->next;
+            conditionnal(subscription, prev, user);
             server_event_user_unsubscribed(uuid, C_UUID);
             DESTROY(subscription->uuid);
             DESTROY(subscription);
