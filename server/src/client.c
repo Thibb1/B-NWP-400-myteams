@@ -49,7 +49,7 @@ void connect_client(void)
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (C_SOCKET == 0) {
             C_SOCKET = SERVER->new_socket;
-            C_STREAM = fdopen(C_SOCKET, "r+");
+            C_STREAM = fdopen(C_SOCKET, "r");
             C_CONNECTED = false;
             use_nothing(i);
             return;

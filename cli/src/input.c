@@ -41,8 +41,6 @@ void help_client(void)
 
 void get_input(void)
 {
-    printf("> ");
-    fflush(stdout);
     read_stream(stdin);
     CHECK(!regex_match(C_BUFFER, REGEX_INPUT), M_SYNTAX);
     to_word_array(C_BUFFER, &C_INPUT);
@@ -54,17 +52,16 @@ void send_input(void)
     int len = 0;
 
     while (C_INPUT[len++]);
-    CODE(len, 2, fprintf, C_STREAM, "%s\n", C_INPUT[0]);
-    CODE(len, 3, fprintf, C_STREAM, "%s \"%s\"\n", C_INPUT[0], C_INPUT[1]);
-    CODE(len, 5, fprintf, C_STREAM, "%s \"%s\" \"%s\"\n", C_INPUT[0],
+    CODE(len, 2, dprintf, C_FD, "%s\n", C_INPUT[0]);
+    CODE(len, 3, dprintf, C_FD, "%s \"%s\"\n", C_INPUT[0], C_INPUT[1]);
+    CODE(len, 5, dprintf, C_FD, "%s \"%s\" \"%s\"\n", C_INPUT[0],
         C_INPUT[1], C_INPUT[3]);
-    CODE(len, 7, fprintf, C_STREAM, "%s \"%s\" \"%s\" \"%s\"\n", C_INPUT[0],
+    CODE(len, 7, dprintf, C_FD, "%s \"%s\" \"%s\" \"%s\"\n", C_INPUT[0],
         C_INPUT[1], C_INPUT[3], C_INPUT[5]);
     if (len != 2 && len != 3 && len != 5 && len != 7) {
-        fprintf(C_STREAM, "Error\n");
+        dprintf(C_FD, "Error\n");
         P_ERROR(M_SYNTAX);
     }
-    fflush(C_STREAM);
 }
 
 void read_input(void)

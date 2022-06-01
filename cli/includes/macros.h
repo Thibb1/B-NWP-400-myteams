@@ -27,6 +27,7 @@
     #define M_PORT "PORT must be a number between 1 and 65535"
     #define M_IP "IP must be a valid IPv4 address"
     #define M_SOCKET "socket() failed"
+    #define M_SELECT "select() failed"
     #define M_MEMORY "memory allocation failed"
     #define M_CONNECT "connect() failed"
     #define M_HELP "/help [command] : display help for a command"
@@ -96,11 +97,5 @@ if (value) { \
 if (in == code) { \
     fun(__VA_ARGS__); \
 }
-
-    #define SEND(f, ...) \
-do { \
-    fprintf(C_STREAM, f, ##__VA_ARGS__); \
-    fflush(C_STREAM); \
-} while (0);
 
 #endif /* !MACROS_H_ */

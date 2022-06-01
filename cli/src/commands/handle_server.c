@@ -36,11 +36,15 @@ void handle_more_codes(int code)
         (time_t)atoi(C_OUT[2]), C_INPUT[1]);
     CODE(code, 274, client_thread_print_replies, C_OUT[1], C_OUT[3],
         (time_t)atoi(C_OUT[5]), C_OUT[7]);
-    CODE(code % 10, 4, SEND, "200\n");
+    CODE(code % 10, 4, dprintf, C_FD, "200\n");
 }
 
 void handle_server_error(int code)
 {
+    if (code == 211) {
+        C_CONNECTED = true;
+        C_UUID = strdup(C_REG);
+    }
     CODE(code, 410, client_error_unauthorized);
     CODE(code, 413, client_error_unknown_user, C_INPUT[1]);
     CODE(code, 423, client_error_unknown_channel, C_INPUT[3]);

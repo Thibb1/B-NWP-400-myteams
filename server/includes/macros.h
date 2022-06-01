@@ -134,8 +134,7 @@ do { \
 
     #define SEND(i, f, ...) \
 do { \
-    fprintf(C_STREAM, f, ##__VA_ARGS__); \
-    fflush(C_STREAM); \
+    dprintf(C_SOCKET, f, ##__VA_ARGS__); \
 } while (0);
 
     #define FOLDER(f, ...) \

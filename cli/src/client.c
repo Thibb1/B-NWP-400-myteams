@@ -32,7 +32,7 @@ void create_client_connection(char **av)
     create_client();
     my_client()->input = socket(AF_INET, SOCK_STREAM, 0);
     ASSERT(my_client()->input == -1, M_SOCKET);
-    my_client()->stream = fdopen(my_client()->input, "r+");
+    my_client()->stream = fdopen(my_client()->input, "r");
     my_client()->server = (struct sockaddr_in) {0};
     my_client()->server.sin_family = AF_INET;
     my_client()->server.sin_port = htons(atoi(av[2]));
@@ -59,19 +59,13 @@ void run_client(void)
 {
     int ret;
     FD_ZERO(&my_client()->read_fds);
-    FD_SET(STDIN_FILENO, &my_client()->read_fds);
     FD_SET(C_FD, &my_client()->read_fds);
+    FD_SET(1, &my_client()->read_fds);
     ret = select(C_FD + 1, &my_client()->read_fds, NULL, NULL, NULL);
-    if (ret == -1) {
-        P_ERROR("Select error");
-        close_client();
-    } else if (ret == 0) {
-        return;
-    }
-    if (FD_ISSET(STDIN_FILENO, &my_client()->read_fds)) {
-        get_input();
-    }
+    ASSERT(ret == -1 && errno != EINTR, M_SELECT);
     if (FD_ISSET(C_FD, &my_client()->read_fds)) {
         read_input();
+    } else if (FD_ISSET(1, &my_client()->read_fds)) {
+        get_input();
     }
 }
