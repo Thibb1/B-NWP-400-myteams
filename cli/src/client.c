@@ -53,7 +53,6 @@ void create_client(void)
     my_client()->cli_buffer = NULL;
     my_client()->server_buffer = NULL;
     my_client()->commands = init_commands();
-
 }
 
 void run_client(void)

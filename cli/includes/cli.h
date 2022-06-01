@@ -64,6 +64,7 @@ void login_client(void);
 
 // handle_server.c
 void handle_server_code(int);
+void handle_more_codes(int);
 void handle_server_error(int);
 void parse_uuid(void);
 void get_next(void);

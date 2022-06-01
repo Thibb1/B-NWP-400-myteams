@@ -28,6 +28,14 @@ void handle_server_code(int code)
         C_INPUT[3]);
     CODE(code, 264, client_team_print_channels, C_OUT[1], C_OUT[3], C_OUT[5]);
     CODE(code, 265, client_print_team, C_OUT[1], C_OUT[3], C_OUT[5]);
+}
+
+void handle_more_codes(int code)
+{
+    CODE(code, 271, client_print_reply_created, C_REG, C_UUID,
+        (time_t)atoi(C_OUT[2]), C_INPUT[1]);
+    CODE(code, 274, client_thread_print_replies, C_OUT[1], C_OUT[3],
+        (time_t)atoi(C_OUT[5]), C_OUT[7]);
     CODE(code % 10, 4, SEND, "200\n");
 }
 

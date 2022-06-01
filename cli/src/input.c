@@ -82,5 +82,6 @@ void read_input(void)
     code = atoi(C_REG);
     parse_uuid();
     handle_server_code(code);
+    handle_more_codes(code);
     handle_server_error(code);
 }

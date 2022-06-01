@@ -187,11 +187,10 @@ void add_channel(char *team_uuid, char *name, char *description);
 channel_t *get_channel(team_t *team, char *uuid);
 channel_t *get_channel_name(team_t *team, char *name);
 
-
 void build_replies(reply_t **replies, char *str);
 void free_replies(reply_t *list);
 void load_replies(reply_t **replies, char *uuid, char *thread_uuid);
-void add_reply(int i, char *body);
+int add_reply(int i, char *body);
 
 void list_server(int);
 void create_state_server(int);
