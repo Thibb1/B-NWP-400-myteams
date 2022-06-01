@@ -10,7 +10,6 @@
 void list_server(int i)
 {
     CHECK(!C_CONNECTED, E_UNAUTHORIZED);
-    printf("debug\n");
     STATE(C_THREAD != NULL, list_replies, i);
     STATE(C_CHANNEL != NULL, list_thread, i);
     STATE(C_TEAM != NULL, list_channel, i);

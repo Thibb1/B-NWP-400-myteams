@@ -126,6 +126,7 @@ void int_handler(int);
 
 void create_server(void);
 void close_server(void);
+void io_server(void);
 void run_server(void);
 void routine_server(void);
 
@@ -172,7 +173,7 @@ void add_team(char *creator_uuid, char *name, char *description);
 team_t *get_team(char *uuid);
 team_t *get_team_name(char *name);
 
-void build_threads(thread_t **threads, char *str);
+void build_threads(thread_t **threads, char *team_uuid, char *str);
 void free_threads(thread_t *list);
 void load_threads(thread_t **threads, char *uuid);
 void add_thread(int i, char *title, char *body);
@@ -185,6 +186,12 @@ void load_channels(channel_t **channels, char *uuid);
 void add_channel(char *team_uuid, char *name, char *description);
 channel_t *get_channel(team_t *team, char *uuid);
 channel_t *get_channel_name(team_t *team, char *name);
+
+
+void build_replies(reply_t **replies, char *str);
+void free_replies(reply_t *list);
+void load_replies(reply_t **replies, char *uuid, char *thread_uuid);
+void add_reply(int i, char *body);
 
 void list_server(int);
 void create_state_server(int);

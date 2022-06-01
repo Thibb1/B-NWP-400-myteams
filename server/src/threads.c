@@ -14,6 +14,7 @@ void free_threads(thread_t *list)
 
     while (tmp) {
         tmp2 = tmp->next;
+        free_replies(tmp->replies);
         DESTROY(tmp->uuid);
         DESTROY(tmp->title);
         DESTROY(tmp->body);
@@ -24,7 +25,7 @@ void free_threads(thread_t *list)
     }
 }
 
-void build_threads(thread_t **threads, char *str)
+void build_threads(thread_t **threads, char *team_uuid, char *str)
 {
     thread_t *thread = NULL;
     char *ptr = NULL;
@@ -38,6 +39,7 @@ void build_threads(thread_t **threads, char *str)
             thread->created_at = (time_t)atoi(strtok_r(ptr, "\"", &ptr));
             thread->title = strdup(strtok_r(ptr, "\"", &ptr));
             thread->body = strdup(strtok_r(ptr, "\"", &ptr));
+            load_replies(&thread->replies, team_uuid, thread->uuid);
             thread->next = *threads;
             *threads = thread;
         }
@@ -51,7 +53,7 @@ void load_threads(thread_t **threads, char *uuid)
 
     snprintf(path, 1024, "logs/teams/%s/threads_uuids.log", uuid);
     get_file(path, &file);
-    build_threads(threads, file);
+    build_threads(threads, uuid, file);
     DESTROY(file);
 }
 

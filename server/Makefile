@@ -25,6 +25,7 @@ SOURCE	=	src/main.c					\
 			src/commands/threads.c		\
 			src/commands/channels.c		\
 			src/commands/call_command.c \
+			src/commands/replies.c		\
 			src/commands/users.c
 CC		=	gcc
 CFLAGS	=	-W -Wall -Wshadow -Wextra -I./includes -I../libs/myteams
