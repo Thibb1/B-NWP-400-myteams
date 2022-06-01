@@ -14,6 +14,9 @@ void handle_server_code(int code)
     CODE(code, 212, disconnect_client);
     CODE(code, 214, client_print_users, C_OUT[1], C_OUT[5], atoi(C_OUT[3]));
     CODE(code, 215, client_print_user, C_OUT[1], C_OUT[5], atoi(C_OUT[3]));
+    CODE(code, 224, client_private_message_print_messages, C_OUT[1],
+        (time_t)atoi(C_OUT[3]), C_OUT[5]);
+    CODE(code, 226, client_event_private_message_received, C_OUT[1], C_OUT[3]);
     CODE(code, 231, client_print_team_created, C_REG, C_INPUT[1], C_INPUT[3]);
     CODE(code, 234, client_print_teams, C_OUT[1], C_OUT[3], C_OUT[5]);
     CODE(code, 235, client_print_team, C_OUT[1], C_OUT[3], C_OUT[5]);
