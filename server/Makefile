@@ -15,6 +15,7 @@ SOURCE	=	src/main.c					\
 			src/channels.c				\
 			src/threads.c				\
 			src/command.c				\
+			src/messages.c				\
 			src/string_util.c			\
 			src/subscription.c			\
 			src/logs.c					\
@@ -25,6 +26,7 @@ SOURCE	=	src/main.c					\
 			src/commands/teams.c		\
 			src/commands/threads.c		\
 			src/commands/channels.c		\
+			src/commands/messages.c		\
 			src/commands/call_command.c \
 			src/commands/replies.c		\
 			src/commands/subscribe.c	\

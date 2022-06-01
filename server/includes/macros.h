@@ -26,6 +26,8 @@
     #define M_LOGOUT "212 " BOLD RED "User logged out" RESET CR
     #define M_USERS "214 \"%s\" \"%d\" \"%s\"" CR
     #define M_USER "215 \"%s\" \"%d\" \"%s\"" CR
+    #define M_MESSAGE_L "224 \"%s\" \"%d\" \"%s\"" CR
+    #define M_MESSAGE_B "226 \"%s\" \"%s\"" CR
     #define M_TEAM_C "231 %s" BOLD GREEN " team created" RESET CR
     #define M_TEAM_L "234 \"%s\" \"%s\" \"%s\"" CR
     #define M_TEAM_I "235 \"%s\" \"%s\" \"%s\"" CR

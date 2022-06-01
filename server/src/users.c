@@ -32,6 +32,7 @@ void free_users(user_t *list)
         DESTROY(tmp->uuid);
         DESTROY(tmp->name);
         free_subscriptions(tmp->subscriptions);
+        free_messages(tmp->messages);
         DESTROY(tmp);
         tmp = tmp2;
     }

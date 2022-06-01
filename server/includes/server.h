@@ -46,11 +46,21 @@ typedef struct subscription_s {
     struct subscription_s *next;
 } subscription_t;
 
+// linked list of messages
+typedef struct message_s {
+    char *uuid;
+    char *target_uuid;
+    time_t created_at;
+    char *body;
+    struct message_s *next;
+} message_t;
+
 // linked list of users
 typedef struct user_s {
     char *uuid;
     char *name;
     subscription_t *subscriptions;
+    message_t *messages;
     bool connected;
     struct user_s *next;
 } user_t;
@@ -231,4 +241,11 @@ void free_subscriptions(subscription_t *list);
 void add_subscription(int, char *uuid);
 bool is_subscribed(int, char *channel_uuid);
 void remove_subscription(int, char *uuid);
+
+void free_messages(message_t *list);
+void send_message(char *client, char *target, char *body);
+void add_message(message_t **messages, message_t *message);
+
+void send_server(int);
+void messages_server(int);
 #endif
